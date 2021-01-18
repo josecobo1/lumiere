@@ -1,0 +1,7 @@
+{
+  "name": "lumiere-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
