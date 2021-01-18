@@ -1,0 +1,41 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>{{ movie.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]='true'>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size='6'>
+        <!-- <ion-img [src]=" 'http://image.tmdb.org/t/p/w400/' + movie.poster_path "></ion-img> -->
+        <ion-img [src]="movie.poster_path | posterImg" ></ion-img>
+      </ion-col>
+      <ion-col size='6'>
+        <ion-text>
+          <h3>Title: {{ movie.title }}</h3>
+        </ion-text>
+        <ion-text>
+          <h3>Original language: {{ movie.original_language }}</h3>
+        </ion-text>
+        <ion-text>
+          <h3>Release date: {{ movie.release_date }}</h3>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf='movie.overview'>
+    <ion-row>
+      <h2>Overview:</h2>
+    </ion-row>
+    <ion-row>
+      <ion-col size='12'>{{ movie.overview }}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

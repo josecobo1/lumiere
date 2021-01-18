@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Upcoming movies
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Upcoming movies</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- {{ upcomingMovies?.results | json }} -->
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor='let movie of upcomingMovies?.results' size='6'>
+        <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+
+  <!-- <app-explore-container name="Tab 1 page"></app-explore-container> -->
+</ion-content>
