@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/search"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ cast.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size='6' *ngFor='let movie of cast.known_for'>
+        <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
+        <!-- <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
