@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { UpcomingMovies } from 'src/app/common/interfaces/movies/upcoming-movies';
-import { GeolocationService } from 'src/app/common/services/geolocation.service';
-import { MoviesService } from 'src/app/common/services/movies.service';
+import { UpcomingMovies } from 'src/app/core/model/movies/upcoming-movies';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
+import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 
 @Component({
@@ -17,12 +17,14 @@ export class UpcomingPage implements OnInit {
               public geolocationService: GeolocationService) { }
 
   upcomingMovies: UpcomingMovies;
-  location: any;
+  region: any;
 
   async ngOnInit() {
-    this.upcomingMovies = await this.moviesService.getUpcomingMovies$().pipe().toPromise();
-    console.log(this.upcomingMovies.results);
-    this.geolocationService.getCurrentLocation();
+    this.region = await this.geolocationService.getCurrentLocation();
+    // this.geolocationService.getCurrentLocation().then(data => this.region = data);
+    // console.log(this.region);
+    this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
+    console.log(this.upcomingMovies);
   }
 
   getDetails(movie){
