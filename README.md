@@ -16,3 +16,5 @@ Funciones generales:
 Wireframe:
 
 ![alt text](https://i.imgur.com/x8gEvrl.png)
+
+[Enlce a Trello](https://trello.com/b/WqRxIBP1/lumi%C3%A8re)
