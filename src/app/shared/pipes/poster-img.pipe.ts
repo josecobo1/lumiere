@@ -6,7 +6,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PosterImgPipe implements PipeTransform {
 
   transform(poster_path: string): string {
-    return 'http://image.tmdb.org/t/p/w400/' + poster_path;
+    if(poster_path) {
+      console.log('http://image.tmdb.org/t/p/w400/' + poster_path);
+      return 'http://image.tmdb.org/t/p/w400/' + poster_path;
+    }
+    else {
+      return 'https://via.placeholder.com/400x560';
+    }
+    
   }
 
 }

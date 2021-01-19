@@ -26,7 +26,7 @@ export class GeolocationService {
   async getCurrentLocation() {
     try {
       let data = await this.geolocation.getCurrentPosition(); // Captura posición gps
-      let position = await this.getHumanReadableLocation$(data.coords).toPromise(); // Transforma la ubicación gps en infor leible
+      let position = await this.getHumanReadableLocation$(data.coords).toPromise(); // Transforma la ubicación gps en información leible
       let region = position.results[1].address_components[5].short_name; // Guardo el codigo de país
       return region;
     } catch (error) {

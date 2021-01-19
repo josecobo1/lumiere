@@ -21,10 +21,7 @@ export class UpcomingPage implements OnInit {
 
   async ngOnInit() {
     this.region = await this.geolocationService.getCurrentLocation();
-    // this.geolocationService.getCurrentLocation().then(data => this.region = data);
-    // console.log(this.region);
     this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
-    console.log(this.upcomingMovies);
   }
 
   getDetails(movie){

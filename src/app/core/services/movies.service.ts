@@ -20,4 +20,12 @@ export class MoviesService {
     console.log(`${this.api_url}/movie/upcoming?${this.api_key}&region=${region}`);
     return this.http.get<UpcomingMovies>(`${this.api_url}/movie/upcoming?${this.api_key}&region=${region}`);
   }
+
+
+  // https://api.themoviedb.org/3/search/movie?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=kill+bill
+  searchMoviesByTitle(query: string): Observable<any> {
+    return this.http.get<any>(`${this.api_url}/search/movie?${this.api_key}&query=${query}`)
+  }
+
+
 }
