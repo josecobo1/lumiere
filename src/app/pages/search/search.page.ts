@@ -21,20 +21,27 @@ export class SearchPage implements OnInit {
   ngOnInit() {
   }
 
-  async search(query){
+  async search(){
 
-    switch(this.reference){
-      case ('title'):
-        console.log('busca por title');
-        this.movies = [];
-        this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
-        break;
-      case('cast'):
-        console.log('busca por cast');
-        this.movies = [];
-        this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
-        console.log(this.movies.results);
-        break;
+    if(this.query && this.query.length > 0){
+
+      switch(this.reference){
+        case ('title'):
+          console.log('busca por title');
+          this.movies = [];
+          this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
+          break;
+        case('cast'):
+          console.log('busca por cast');
+          this.movies = [];
+          this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
+          console.log(this.movies.results);
+          break;
+        case('genre'):
+          this.movies = [];
+          this.movies = await this.movieService.searchMoviesByGenre(this.query).pipe().toPromise();
+      }
+
     }
 
   }
@@ -58,7 +65,7 @@ export class SearchPage implements OnInit {
   segmentChange(event){
     console.log(event.detail.value);
     this.reference = event.detail.value;
-    this.search(this.query);
+    this.search();
   }
 
   getMovieList(cast){

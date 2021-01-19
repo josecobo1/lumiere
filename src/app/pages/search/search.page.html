@@ -48,6 +48,12 @@
       </ion-col>
     </ion-row>
 
+    <ion-row *ngIf="reference === 'genre'">
+      <ion-col size='6' *ngFor='let movie of movies?.results'>
+        <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
 
 </ion-content>

@@ -37,5 +37,10 @@ export class MoviesService {
     return this.http.get<any>(`${this.api_url}/search/person?${this.api_key}&query=${query}`);
   }
 
+  // https://api.themoviedb.org/3/discover/movie?api_key=5d8c3de3e2543b591b9b443d64c7b56f&with_genres=28
+  searchMoviesByGenre(genre: string): Observable<any> {
+    return this.http.get<any>(`${this.api_url}/discover/movie?${this.api_key}&with_genres=28`);
+  }
+
 
 }
