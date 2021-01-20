@@ -10,22 +10,22 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth) { }
 
+  // Registrar usuario
   signUpUser(mail, password): Promise<any> {
     return this.afAuth.createUserWithEmailAndPassword(mail, password);
   }
 
+  // Iniciar sesión
   signInUser(mail, password): Promise<any> {
     return this.afAuth.signInWithEmailAndPassword(mail, password);
   }
 
+  // Cerrar sesión
   logout() {
     this.afAuth.signOut();
   }
 
-  // isLogged$(): Observable<any> {
-  //   return this.afAuth.authState;
-  // }
-
+  // Comprovar si el usuario ha iniciado sesión
   isLogged(): Promise<any>{
     return this.afAuth.authState.pipe(first()).toPromise();
   }

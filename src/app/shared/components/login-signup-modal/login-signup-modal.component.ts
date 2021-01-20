@@ -5,6 +5,7 @@ import { ModalSignupComponent } from '../modal-signup/modal-signup.component';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ModalSigninComponent } from '../modal-signin/modal-signin.component';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-login-signup-modal',
@@ -13,7 +14,11 @@ import { ModalSigninComponent } from '../modal-signin/modal-signin.component';
 })
 export class LoginSignupModalComponent implements OnInit {
 
-  constructor(public modalController: ModalController, private fb: FormBuilder, private authService: AuthService, public toastController: ToastController) { }
+  constructor(public modalController: ModalController, 
+              private fb: FormBuilder, 
+              private authService: AuthService, 
+              public toastController: ToastController,
+              private userService: UserService) { }
 
   ngOnInit() {}
 
@@ -76,9 +81,20 @@ export class LoginSignupModalComponent implements OnInit {
   }
 
   async saveUser(user){
-    const u = await this.authService.signUpUser(user.email, user.password);
 
-    this.presentToast('User registered correctly, please sign in');
+    try {
+      const u = await this.authService.signUpUser(user.email, user.password);
+      console.log('despues del sign up', u.user.uid); // u.user.uid es el id único del auth
+      let newUser = user;
+      delete newUser.password;
+      newUser.id = u.user.uid;
+      console.log('newUser: ', newUser)
+      await this.userService.addUser({...newUser, seen: [], saved: [], lists: []});
+      this.presentToast('User registered correctly, please sign in');
+    } catch (error) {
+      this.presentToast(`Something didn't go as planned please try again later`);
+    }
+
   }
 
   async presentToast(message) {
