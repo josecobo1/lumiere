@@ -74,6 +74,9 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** custom **/
+  --ion-color-custom: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -145,6 +148,9 @@
     --ion-color-light-contrast-rgb: 255,255,255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
+
+    /** custom **/
+    --ion-color-custom: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
   }
 
   /*
@@ -184,6 +190,9 @@
     --ion-item-background: #000000;
 
     --ion-card-background: #1c1c1d;
+
+    /** custom **/
+    --ion-color-custom: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
   }
 
 
@@ -228,5 +237,12 @@
     --ion-tab-bar-background: #1f1f1f;
 
     --ion-card-background: #1e1e1e;
+
+    /** custom **/
+    --ion-color-custom: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
   }
 }
+
+$app-background: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
+$background-color: transparent;
+$toolbar-background: transparent;
