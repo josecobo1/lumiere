@@ -27,7 +27,6 @@ export class SearchPage implements OnInit {
 
       switch(this.reference){
         case ('title'):
-          console.log('busca por title');
           this.movies = [];
           this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
           break;
@@ -37,9 +36,9 @@ export class SearchPage implements OnInit {
           this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
           console.log(this.movies.results);
           break;
-        case('genre'):
+        case('year'):
           this.movies = [];
-          this.movies = await this.movieService.searchMoviesByGenre(this.query).pipe().toPromise();
+          this.movies = await this.movieService.searchMoviesByYear(this.query).pipe().toPromise();
       }
 
     }
@@ -53,9 +52,16 @@ export class SearchPage implements OnInit {
 
   async presentModal(movie){
 
-    // ANtes de mostrat el modal con los detalles de la película busco las imagenes de la película
-    const images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
-    console.log(images);
+    let images; 
+
+    try {
+      // Antes de mostrat el modal con los detalles de la película busco las imagenes de la película
+      images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+    } catch (error) {
+      console.log(`No se han encontrado imagenes de esta película`);
+      images = [];
+    }
+
     const modal = await this.modalController.create({
       component: ModalMovieDetailsComponent,
       componentProps: {

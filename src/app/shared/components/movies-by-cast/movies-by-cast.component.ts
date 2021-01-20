@@ -20,8 +20,13 @@ export class MoviesByCastComponent implements OnInit {
 
   async presentModal(movie){
 
-    const images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
-    console.log(images);
+    let images;
+    try {
+      images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+    } catch (error) {
+      images = [];
+      console.log(`Esta película no tiene imagenes`);
+    }
 
     const modal = await this.modalController.create({
       component: ModalMovieDetailsComponent,
