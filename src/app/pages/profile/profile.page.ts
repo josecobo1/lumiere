@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginSignupModalComponent } from 'src/app/shared/components/login-signup-modal/login-signup-modal.component';
 
 @Component({
@@ -9,7 +10,7 @@ import { LoginSignupModalComponent } from 'src/app/shared/components/login-signu
 })
 export class ProfilePage implements OnInit {
 
-  constructor(public modalController: ModalController) { }
+  constructor(public modalController: ModalController, public authService: AuthService, public toastController: ToastController) { }
 
   ngOnInit() {
   }
@@ -20,6 +21,29 @@ export class ProfilePage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  logout(){
+    this.authService.logout();
+    this.presentToast('Session ended');
+  }
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
+  }
+
+  async isLogged() {
+    console.log('boton clickado');
+    const state = await this.authService.isLogged();
+    if(state){
+      this.presentToast('User logged');
+    } else {
+      this.presentToast('User not logged in the app');
+    }
   }
 
 }
