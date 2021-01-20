@@ -29,10 +29,15 @@ export class UpcomingPage implements OnInit {
   }
 
   async presentModal(movie) {
+
+    const images = await this.moviesService.getMovieImages(movie.id).pipe().toPromise();
+    console.log('fotos de la peli', images);
+
     const modal = await this.modalController.create({
       component: ModalMovieDetailsComponent,
       componentProps: {
-        movie: movie
+        movie: movie,
+        images: images
       }
     });
 

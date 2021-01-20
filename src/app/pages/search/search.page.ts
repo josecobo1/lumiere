@@ -52,10 +52,15 @@ export class SearchPage implements OnInit {
   }
 
   async presentModal(movie){
+
+    // ANtes de mostrat el modal con los detalles de la película busco las imagenes de la película
+    const images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+    console.log(images);
     const modal = await this.modalController.create({
       component: ModalMovieDetailsComponent,
       componentProps: {
-        movie: movie
+        movie: movie,
+        images: images
       }
     });
 

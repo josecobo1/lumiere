@@ -12,6 +12,15 @@ export class ModalMovieDetailsComponent implements OnInit {
   constructor(public modalController: ModalController) { }
 
   @Input() movie: Movie;
+  @Input() images: any;
+
+  slideOpts = {
+    initialSlide: 1,
+    speed: 400,
+    autoplay: {
+      delay: 3000
+    }
+  }
 
   ngOnInit() {}
 

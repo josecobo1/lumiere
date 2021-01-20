@@ -42,5 +42,10 @@ export class MoviesService {
     return this.http.get<any>(`${this.api_url}/discover/movie?${this.api_key}&with_genres=28`);
   }
 
+  // https://api.themoviedb.org/3/movie/24/images?api_key=5d8c3de3e2543b591b9b443d64c7b56f
+  getMovieImages(id): Observable<any> {
+    return this.http.get<any>(`${this.api_url}/movie/${id}/images?${this.api_key}`);
+  }
+
 
 }

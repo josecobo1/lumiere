@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from '../modal-movie-details/modal-movie-details.component';
 
 @Component({
@@ -10,7 +11,7 @@ import { ModalMovieDetailsComponent } from '../modal-movie-details/modal-movie-d
 export class MoviesByCastComponent implements OnInit {
 
   cast: any;
-  constructor(public modalController: ModalController) { }
+  constructor(public modalController: ModalController, private movieService: MoviesService) { }
 
   ngOnInit() {
     console.log(history.state.known_for);
@@ -18,10 +19,15 @@ export class MoviesByCastComponent implements OnInit {
   }
 
   async presentModal(movie){
+
+    const images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+    console.log(images);
+
     const modal = await this.modalController.create({
       component: ModalMovieDetailsComponent,
       componentProps: {
-        movie: movie
+        movie: movie,
+        images: images
       }
     });
 
