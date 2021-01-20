@@ -1,0 +1,38 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Signup</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]='form' (ngSubmit)='onSubmit()'>
+    <ion-item lines="full">
+      <ion-label position="floating" >Name</ion-label>
+      <ion-input type="text" required formControlName='name'></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" >Username</ion-label>
+      <ion-input type="text" required formControlName='username'></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" >Email</ion-label>
+      <ion-input type="text" required formControlName='email'></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" >Password</ion-label>
+      <ion-input type="password" required formControlName='password'></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)='onSubmit()' color="danger" expand="block">Sign Up</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
