@@ -30,4 +30,10 @@ export class AuthService {
     return this.afAuth.authState.pipe(first()).toPromise();
   }
 
+  // Recupera uid del usuario actual
+  async getUserId(): Promise<any> {
+    const user = await this.afAuth.currentUser;
+    return user.uid;
+  }
+
 }

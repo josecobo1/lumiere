@@ -25,6 +25,23 @@
         <ion-text>
           <h3>Release date: {{ movie.release_date }}</h3>
         </ion-text>
+        <!-- Botones para guardar como vista, pendiente o meter en una lista -->
+        <ion-buttons>
+          <!-- Película vista -->
+          <ion-button (click)='setAsSeen()'>
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+
+          <!-- Guardar para ver después -->
+        <ion-button (click)='setAsToSee()'>
+          <ion-icon name="bookmark-outline"></ion-icon>
+        </ion-button>
+
+        <!-- Guardar en una lista -->
+        <ion-button (click)='addToList()'>
+          <ion-icon name="list-outline"></ion-icon>
+        </ion-button>
+        </ion-buttons>
       </ion-col>
     </ion-row>
   </ion-grid>

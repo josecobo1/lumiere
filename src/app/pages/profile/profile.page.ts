@@ -12,7 +12,13 @@ export class ProfilePage implements OnInit {
 
   constructor(public modalController: ModalController, public authService: AuthService, public toastController: ToastController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const state = await this.authService.isLogged();
+
+    if(state == null){
+      console.timeLog('no session');
+      this.presentModal();
+    }
   }
 
   async presentModal(){
