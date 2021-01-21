@@ -29,12 +29,14 @@
         <ion-buttons>
           <!-- Película vista -->
           <ion-button (click)='setAsSeen()'>
-            <ion-icon name="eye-outline"></ion-icon>
+            <ion-icon *ngIf='!seen' name="eye-outline"></ion-icon>
+            <ion-icon *ngIf='seen' name="eye"></ion-icon>
           </ion-button>
 
           <!-- Guardar para ver después -->
         <ion-button (click)='setAsToSee()'>
-          <ion-icon name="bookmark-outline"></ion-icon>
+          <ion-icon *ngIf='!saved' name="bookmark-outline"></ion-icon>
+          <ion-icon *ngIf='saved' name="bookmark"></ion-icon>
         </ion-button>
 
         <!-- Guardar en una lista -->

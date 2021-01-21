@@ -20,13 +20,14 @@ export class ModalMovieDetailsComponent implements OnInit {
 
   @Input() movie: Movie;
   @Input() images: any;
+  seen: boolean;
+  saved: boolean;
   
   // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
   async isUserLogged(){
     const state = await this.auth.isLogged();
 
     if(state == null) {
-      this.presentModal();
       return false;
     } else {
       return true;
@@ -48,22 +49,33 @@ export class ModalMovieDetailsComponent implements OnInit {
     // mostrará el modal de inicio de sesión
     if(await this.isUserLogged()){
 
+      // Recupero el uid del usuario de la base de datos
+      const userUid = await this.auth.getUserId(); 
+
       try {
-        // Recupero el uid del usuario de la base de datos
-        const userUid = await this.auth.getUserId(); 
 
         // Uso uid el usuario e id de la película para añadir la pelilcula a vistas
+        // si la película no està marcada como vista el service devuelve true, en caso contrario
+        // devuelve false
         const result = await this.userService.addMovieToSeen(userUid, this.movie.id);
 
-        console.log('result', result);
-
-        // Toast de confirmación
+        if(result){
+          // Toast de confirmación
         this.presentToast('Movie saved as seen');
+        await this.isSeen();
+        } else {
+          await this.userService.removeMovieFromSeen(userUid, this.movie.id);
+          this.presentToast('This movie was already saved as seen');
+          await this.isSeen();
+        }
+
       } catch (error) {
         this.presentToast('Oops something has failed please try again later');
       }
       
-    } 
+    } else  {
+      this.presentModal();
+    }
      
   }
 
@@ -71,19 +83,30 @@ export class ModalMovieDetailsComponent implements OnInit {
 
     if(await this.isUserLogged()) {
 
-      try {
-        // Recupero el uid del usuario de la base de datos
-        const userUid = await this.auth.getUserId(); 
+      // Recupero el uid del usuario de la base de datos
+      const userUid = await this.auth.getUserId();
+
+      try { 
 
         // Uso uid el usuario e id de la película para añadir la pelilcula a vistas
-        await this.userService.addMovieToSeeLater(userUid, this.movie.id);
+        const result = await this.userService.addMovieToSeeLater(userUid, this.movie.id);
 
-        // Muestro Toast de confirmación
-        this.presentToast('Movie saved to save later');
+        if(result) {
+          // Muestro Toast de confirmación
+          this.presentToast('Movie saved to save later');
+          await this.isSaved();
+        } else {
+          await this.userService.removeMovieFromSeeLater(userUid, this.movie.id);
+          this.presentToast('The movie has been removed from saved');
+          await this.isSaved();
+        }
+
       } catch (error) {
         this.presentToast('Ooops something failed please try again later');
       }
       
+    } else {
+      this.presentModal();
     }
     
   }
@@ -106,6 +129,8 @@ export class ModalMovieDetailsComponent implements OnInit {
         ]
       });
       await actionSheet.present();
+    } else {
+      this.presentModal();
     }
 
     
@@ -120,7 +145,13 @@ export class ModalMovieDetailsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    const logged = this.isUserLogged();
+    if(logged) {
+      this.isSeen();
+      this.isSaved();
+    }
+  }
 
   dismissModal() {
     this.modalController.dismiss();
@@ -132,6 +163,18 @@ export class ModalMovieDetailsComponent implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  async isSeen(){
+    const userUid = await this.auth.getUserId();
+    this.seen = await this.userService.isSeen(userUid, this.movie.id);
+    console.log('seen', this.saved);
+  }
+
+  async isSaved() {
+    const userUid = await this.auth.getUserId();
+    this.saved = await this.userService.isSaved(userUid, this.movie.id);
+    console.log('saved:', this.saved);
   }
 
 }

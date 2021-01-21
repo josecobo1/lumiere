@@ -22,6 +22,26 @@ export class UserService {
     return this.afs.collection('Users').doc(uid).valueChanges();
   }
 
+  // Comprueba si una película està marcada como vista por un usuario
+  async isSeen(userUid, movieId) {
+
+    // Recupero la información del usuario
+    const user = await this.getUser(userUid).pipe(first()).toPromise();
+
+    // Busco en el array si la película aparece como vista
+    const seen = user.seen.some(m => m.movie == movieId);
+
+    return seen;
+  }
+
+  // Comprueba si una película està guardada por un usuario
+  async isSaved(userUid, movieId){
+    const user = await this.getUser(userUid).pipe(first()).toPromise();
+    const saved = user.saved.some(m => m.movie == movieId);
+    console.log('service is saved:', saved)
+    return saved;
+  }
+
   // Añade id de una película a la lista de películas vistas
   async addMovieToSeen(userUid, movieId) {
 
@@ -29,9 +49,10 @@ export class UserService {
     const user = await this.getUser(userUid).pipe(first()).toPromise();
 
     console.log(user);
-
+    // Busco en al array de peliculas si alguna contien el mismo id => devuelve true o false
     const duplicated = user.seen.some(m => m.movie == movieId);
-    console.log(duplicated);
+    
+    
     if(duplicated) {
       return false; // Devuelvo false como resultado de la operación ya que la película ya està guardada como vista
     } else {
@@ -48,19 +69,52 @@ export class UserService {
 
   }
 
+  // Elimina películas de la lista de películas vistas
+  async removeMovieFromSeen(userUid, movieId) {
+
+    // Recupero la información del usuario
+    const user = await this.getUser(userUid).pipe(first()).toPromise();
+    
+    // Busco el indice de la película en el array de películas vistas
+    const findIndex = user.seen.findIndex(m => m.movie == movieId);
+
+    // Elimino la película del array usando el indice
+    user.seen.splice(findIndex, 1);
+
+    // Guardo los cambios en Firestore
+    this.afs.collection('Users').doc(userUid).set(user);
+
+  }
+
   // Añade ide de una película a la lista de películas guardadas para ver mas tarde
   async addMovieToSeeLater(userUid, movieId) {
 
     // Recupero información del usuario en Firestore
     const user = await this.getUser(userUid).pipe(first()).toPromise();
 
-    // Añado el id de la película a la lista de películas por ver
-    user.saved.push({
-      movie: movieId
-    });
+    const duplicated = user.saved.some(m => m.movie == movieId);
 
-    // Guardo los cambios en Firestore
-    return this.afs.collection('Users').doc(userUid).set(user);
+    if(duplicated) {
+      return false;
+    } else {
+      // Añado el id de la película a la lista de películas por ver
+      user.saved.push({
+        movie: movieId
+      });
+
+      // Guardo los cambios en Firestore
+      this.afs.collection('Users').doc(userUid).set(user);
+
+      return true;
+    }
+
+  }
+
+  async removeMovieFromSeeLater(userUid, movieId) {
+    const user = await this.getUser(userUid).pipe(first()).toPromise();
+    const findIndex = user.saved.findIndex(m => m.movie == movieId);
+    user.saved.splice(findIndex, 1);
+    this.afs.collection('Users').doc(userUid).set(user);
   }
 
 }
