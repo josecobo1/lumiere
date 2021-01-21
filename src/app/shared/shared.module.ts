@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalSignupComponent } from './components/modal-signup/modal-signup.component';
 import { ModalSigninComponent } from './components/modal-signin/modal-signin.component';
 import { LoginSignupModalComponent } from './components/login-signup-modal/login-signup-modal.component';
+import { ListElementComponent } from './components/list-element/list-element.component';
 
 
 
@@ -21,12 +22,13 @@ import { LoginSignupModalComponent } from './components/login-signup-modal/login
                  MoviesByCastComponent, 
                  ModalSignupComponent, 
                  ModalSigninComponent,
-                LoginSignupModalComponent],
+                 LoginSignupModalComponent,
+                 ListElementComponent ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),
     ReactiveFormsModule
   ],
-  exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent]
+  exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent, ListElementComponent]
 })
 export class SharedModule { }

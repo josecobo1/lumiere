@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from 'src/app/shared/components/login-signup-modal/login-signup-modal.component';
 
 @Component({
@@ -10,7 +12,16 @@ import { LoginSignupModalComponent } from 'src/app/shared/components/login-signu
 })
 export class ProfilePage implements OnInit {
 
-  constructor(public modalController: ModalController, public authService: AuthService, public toastController: ToastController) { }
+  seen;
+  saved;
+  user;
+
+  selector: string = 'seen';
+
+  constructor(public modalController: ModalController, 
+              public authService: AuthService, 
+              public toastController: ToastController,
+              public userService: UserService) { }
 
   async ngOnInit() {
     const state = await this.authService.isLogged();
@@ -18,6 +29,10 @@ export class ProfilePage implements OnInit {
     if(state == null){
       console.timeLog('no session');
       this.presentModal();
+    } else {
+      const uid = await this.authService.getUserId();
+      this.user = await this.userService.getUser(uid).pipe(first()).toPromise();
+      console.log(this.user);
     }
   }
 
@@ -50,6 +65,10 @@ export class ProfilePage implements OnInit {
     } else {
       this.presentToast('User not logged in the app');
     }
+  }
+
+  segmentChanged(event) {
+    this.selector = event.detail.value;
   }
 
 }

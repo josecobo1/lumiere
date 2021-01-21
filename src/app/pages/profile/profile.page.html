@@ -36,21 +36,21 @@
 
             <ion-item lines='none'>
               <ion-label>
-                <span>15</span>
+                <span>{{ user?.seen.length }}</span>
                 <h2 class="text-size-sm">Seen</h2>
               </ion-label>
             </ion-item>
 
             <ion-item lines='none'>
               <ion-label>
-                <span>15</span>
+                <span>{{ user?.saved.length }}</span>
                 <h2>Saved</h2>
               </ion-label>
             </ion-item>
 
             <ion-item lines='none'>
               <ion-label>
-                <span>15</span>
+                <span>{{ user?.lists.length }}</span>
                 <h2>Lists</h2>
               </ion-label>
             </ion-item>
@@ -66,7 +66,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-segment value='seen'>
+        <ion-segment (ionChange)='segmentChanged($event)' value='seen'>
           <ion-segment-button value='seen'>
             <ion-label>Movies seen</ion-label>
           </ion-segment-button>
@@ -77,6 +77,34 @@
             <ion-label>Lists created</ion-label>
           </ion-segment-button>
         </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row *ngIf="selector === 'seen'">
+      <ion-col size='12' *ngFor='let movie of user?.seen'>
+        <ion-list>
+          <app-list-element [id]='movie.movie'></app-list-element>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  
+
+  
+    <ion-row *ngIf="selector === 'saved'">
+      <ion-col size='12' *ngFor='let movie of user?.saved'>
+        <ion-list>
+          <app-list-element [id]='movie.movie'></app-list-element>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  
+    <ion-row *ngIf="selector === 'lists'">
+      <ion-col size='12' *ngFor='let movie of user?.lists'>
+        <!-- <ion-list>
+          <app-list-element [id]='movie.movie'></app-list-element>
+        </ion-list> -->
       </ion-col>
     </ion-row>
   </ion-grid>

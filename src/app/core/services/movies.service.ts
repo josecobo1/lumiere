@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Movie } from '../model/movies/movie';
 import { UpcomingMovies } from '../model/movies/upcoming-movies';
 
 @Injectable({
@@ -52,5 +53,8 @@ export class MoviesService {
     return this.http.get<any>(`${this.api_url}/movie/${id}/images?${this.api_key}`);
   }
 
-
+  // https://api.themoviedb.org/3/movie/24?api_key=5d8c3de3e2543b591b9b443d64c7b56f
+  getMovieById(id): Observable<Movie> {
+    return this.http.get<Movie>(`${this.api_url}/movie/${id}?${this.api_key}`);
+  }
 }
