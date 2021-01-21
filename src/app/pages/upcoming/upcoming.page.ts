@@ -22,16 +22,24 @@ export class UpcomingPage implements OnInit {
 
   async ngOnInit() {
 
+    console.log('ngOnInit');
+
     try {
+      console.log('try region');
       this.region = await this.geolocationService.getCurrentLocation();
+      console.log(this.region);
     } catch (error) {
       this.presentToast(`Can't get your current location`);
+      console.log(error);
     }
 
     try {
+      console.log('try upcoming movies');
       this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
+      console.log(this.upcomingMovies);
     } catch (error) {
       this.presentToast(`Can't get the upcoming movie listfor your location, please try again later`);
+      console.log(error);
     }
 
   }

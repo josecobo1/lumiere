@@ -22,7 +22,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule, ReactiveFormsModule],
+  imports: [BrowserModule, 
+            IonicModule.forRoot(), 
+            AppRoutingModule, 
+            HttpClientModule, 
+            SharedModule, 
+            AngularFireModule.initializeApp(environment.firebaseConfig), 
+            AngularFireAuthModule, 
+            AngularFirestoreModule, 
+            ReactiveFormsModule],
   providers: [
     StatusBar,
     SplashScreen,

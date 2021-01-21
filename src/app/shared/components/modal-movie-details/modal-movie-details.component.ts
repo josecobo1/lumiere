@@ -103,6 +103,7 @@ export class ModalMovieDetailsComponent implements OnInit {
 
       } catch (error) {
         this.presentToast('Ooops something failed please try again later');
+
       }
       
     } else {
@@ -146,7 +147,7 @@ export class ModalMovieDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const logged = this.isUserLogged();
+    const logged = await this.isUserLogged();
     if(logged) {
       this.isSeen();
       this.isSaved();

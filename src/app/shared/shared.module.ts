@@ -9,14 +9,22 @@ import { MoviesByCastComponent } from './components/movies-by-cast/movies-by-cas
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalSignupComponent } from './components/modal-signup/modal-signup.component';
 import { ModalSigninComponent } from './components/modal-signin/modal-signin.component';
+import { LoginSignupModalComponent } from './components/login-signup-modal/login-signup-modal.component';
 
 
 
 @NgModule({
-  declarations: [MoviePosterComponent, ModalMovieDetailsComponent, PosterImgPipe, CastImageComponent, MoviesByCastComponent, ModalSignupComponent, ModalSigninComponent],
+  declarations: [MoviePosterComponent, 
+                 ModalMovieDetailsComponent, 
+                 PosterImgPipe, 
+                 CastImageComponent, 
+                 MoviesByCastComponent, 
+                 ModalSignupComponent, 
+                 ModalSigninComponent,
+                LoginSignupModalComponent],
   imports: [
     CommonModule,
-    IonicModule,
+    IonicModule.forRoot(),
     ReactiveFormsModule
   ],
   exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent]
