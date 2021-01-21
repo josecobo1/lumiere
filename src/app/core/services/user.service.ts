@@ -110,6 +110,7 @@ export class UserService {
 
   }
 
+  // Elimina película de ls lista de películas guardadas
   async removeMovieFromSeeLater(userUid, movieId) {
     const user = await this.getUser(userUid).pipe(first()).toPromise();
     const findIndex = user.saved.findIndex(m => m.movie == movieId);

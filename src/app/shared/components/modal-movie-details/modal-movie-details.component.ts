@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { first } from 'rxjs/operators';
 import { Movie } from 'src/app/core/model/movies/movie';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
+import { ModalNewListComponent } from '../modal-new-list/modal-new-list.component';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -16,12 +19,28 @@ export class ModalMovieDetailsComponent implements OnInit {
               public auth: AuthService, 
               public userService: UserService,
               public actionSheetController: ActionSheetController,
-              public toast: ToastController) { }
+              public toast: ToastController,
+              public listsService: ListsService) { }
 
   @Input() movie: Movie;
   @Input() images: any;
   seen: boolean;
   saved: boolean;
+
+  lists = [
+    {
+      name: 'Terminator',
+      id: 1
+    },
+    {
+      name: 'Spain is different',
+      id: 2
+    },
+    {
+      name: 'Goya 2020',
+      id: 3
+    }
+  ];
   
   // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
   async isUserLogged(){
@@ -116,17 +135,69 @@ export class ModalMovieDetailsComponent implements OnInit {
     alert(movieId);
   }
 
+  // Transforma una lista de objetos clave valor en opciones para el ActionSheetOptions
+  transformListObjectIntoActionSheetParameters(lists: any) {
+
+    console.log(lists);
+
+    let options = [];
+
+    // lists.map(l => {
+    //   console.log(l);
+    //   const opt = {
+    //     text: l.name,
+    //     handler: () => {
+    //       this.saveIntoList(l.id)
+    //     }
+    //   };
+    //   options.push(opt);
+    // })
+    console.log('antes del bucle dentro del transform');
+    lists.forEach(element => {
+      console.log(element);
+      const opt = {
+        text: element.name,
+        handler: () => {
+          this.saveIntoList(element.id)
+        }
+      };
+      options.push(opt);
+    });
+
+    console.log(options);
+
+    return options;
+  }
+
   async addToList(){
     
     if(await this.isUserLogged()){
-      const actionSheet = await this.actionSheetController.create({
-        buttons: [
+
+      // Recupero el uid del usuario
+      const userUid = await this.auth.getUserId();
+
+      // Recupero las listas de un usuario
+      const lists = await this.listsService.getUsersLists(userUid);
+      console.log(lists);
+      let sheetOptions = this.transformListObjectIntoActionSheetParameters(lists);
+
+      // array con objetos sheetOptions
+      let actionSheetOptions = [
           {
             text: 'New list',
-            handler: ()  => {
-              this.saveIntoList(this.movie.id);
+            handler: () => {
+              this.newMoviesList();
             }
-          }
+          },
+          ...sheetOptions
+      ];
+
+      console.log('options', sheetOptions);
+      
+      // Configuro sheetOptions
+      const actionSheet = await this.actionSheetController.create({
+        buttons: [
+          ...actionSheetOptions
         ]
       });
       await actionSheet.present();
@@ -176,6 +247,17 @@ export class ModalMovieDetailsComponent implements OnInit {
     const userUid = await this.auth.getUserId();
     this.saved = await this.userService.isSaved(userUid, this.movie.id);
     console.log('saved:', this.saved);
+  }
+
+  async newMoviesList() {
+    const modal = await this.modalController.create({
+      component: ModalNewListComponent
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    console.log('nueva lista:', data);
+    this.lists.push(data.list);
+    
   }
 
 }
