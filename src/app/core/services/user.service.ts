@@ -27,14 +27,25 @@ export class UserService {
 
     // Recupero toda la info del usuario en Firestore
     const user = await this.getUser(userUid).pipe(first()).toPromise();
-    
-    // En la lista de películas vistas añado el id de la nueva película
-    user.seen.push({
-      movie: movieId
-    });
 
-    // Guardo los cambios en Firestore
-    return this.afs.collection('Users').doc(userUid).set(user);
+    console.log(user);
+
+    const duplicated = user.seen.some(m => m.movie == movieId);
+    console.log(duplicated);
+    if(duplicated) {
+      return false; // Devuelvo false como resultado de la operación ya que la película ya està guardada como vista
+    } else {
+      // En la lista de películas vistas añado el id de la nueva película
+      user.seen.push({
+        movie: movieId
+      });
+
+      // Guardo los cambios en Firestore
+      this.afs.collection('Users').doc(userUid).set(user);
+
+      return true; // Devuelve true como resultado, la película se ha añadido al array de películas vistas
+    }
+
   }
 
   // Añade ide de una película a la lista de películas guardadas para ver mas tarde

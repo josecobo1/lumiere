@@ -53,7 +53,9 @@ export class ModalMovieDetailsComponent implements OnInit {
         const userUid = await this.auth.getUserId(); 
 
         // Uso uid el usuario e id de la película para añadir la pelilcula a vistas
-        await this.userService.addMovieToSeen(userUid, this.movie.id);
+        const result = await this.userService.addMovieToSeen(userUid, this.movie.id);
+
+        console.log('result', result);
 
         // Toast de confirmación
         this.presentToast('Movie saved as seen');
