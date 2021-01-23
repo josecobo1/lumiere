@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { MoviesService } from './movies.service';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { UserService } from './user.service';
 })
 export class ListsService {
 
-  constructor(private afs: AngularFirestore, private user: UserService) { }
+  constructor(private afs: AngularFirestore, private user: UserService, public moviesService: MoviesService) { }
 
   // Recupera toda la info del usuario con el service User
   async getUserLists(uid) {
@@ -53,6 +54,15 @@ export class ListsService {
     } ));
 
     return detailedLists;
+  }
+
+  // Recupera todas las peliculas dentro de una lista
+  async getMoviesFromList(listId): Promise<any> {
+    const list = await this.getListDetails(listId).pipe(first()).toPromise();
+    const movies = await Promise.all(list.movies.map(async (m) => {
+      return await this.moviesService.getMovieById(m).pipe(first()).toPromise();
+    }));
+    return movies;
   }
 
 }

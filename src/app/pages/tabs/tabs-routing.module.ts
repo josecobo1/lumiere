@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ListStoredMoviesComponent } from 'src/app/shared/components/list-stored-movies/list-stored-movies.component';
 import { MoviesByCastComponent } from 'src/app/shared/components/movies-by-cast/movies-by-cast.component';
 
 import { TabsPage } from './tabs.page';
@@ -28,7 +29,16 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('./../../pages/profile/profile.module').then( m => m.ProfilePageModule)
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./../../pages/profile/profile.module').then( m => m.ProfilePageModule)
+          },
+          {
+            path: 'lists/details',
+            component: ListStoredMoviesComponent
+          }
+        ]
       }
     ]
   },

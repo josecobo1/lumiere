@@ -97,10 +97,12 @@
     </ion-row>
   
     <ion-row *ngIf="selector === 'lists'">
-      <ion-col size='12' *ngFor='let movie of user?.lists'>
-        <!-- <ion-list>
-          <app-list-element [id]='movie.movie'></app-list-element>
-        </ion-list> -->
+      <ion-col size='12' *ngFor='let list of lists'>
+        <ion-list>
+          <ion-item>
+            <ion-item (click)='getDetails(list)'>{{ list.name }}</ion-item>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
 

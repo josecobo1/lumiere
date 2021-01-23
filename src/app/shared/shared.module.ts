@@ -12,6 +12,7 @@ import { ModalSigninComponent } from './components/modal-signin/modal-signin.com
 import { LoginSignupModalComponent } from './components/login-signup-modal/login-signup-modal.component';
 import { ListElementComponent } from './components/list-element/list-element.component';
 import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
+import { ListStoredMoviesComponent } from './components/list-stored-movies/list-stored-movies.component';
 
 
 
@@ -25,12 +26,13 @@ import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
                  ModalSigninComponent,
                  LoginSignupModalComponent,
                  ListElementComponent,
-                 WhereWatchCountryPipe ],
+                 WhereWatchCountryPipe,
+                ListStoredMoviesComponent ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),
     ReactiveFormsModule
   ],
-  exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent, ListElementComponent]
+  exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent, ListElementComponent, ListStoredMoviesComponent]
 })
 export class SharedModule { }

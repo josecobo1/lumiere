@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from 'src/app/shared/components/login-signup-modal/login-signup-modal.component';
 
@@ -16,6 +18,7 @@ export class ProfilePage implements OnInit {
   seen;
   saved;
   user;
+  lists;
   subscribe: Subscription;
 
   selector: string = 'seen';
@@ -23,10 +26,12 @@ export class ProfilePage implements OnInit {
   constructor(public modalController: ModalController, 
               public authService: AuthService, 
               public toastController: ToastController,
-              public userService: UserService) { }
+              public userService: UserService,
+              public listsService: ListsService,
+              public router: Router) { }
 
   async ngOnInit() {
-    
+
     const state = await this.authService.isLogged();
 
     if(state == null){
@@ -70,8 +75,18 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  segmentChanged(event) {
-    this.selector = event.detail.value;
+  async segmentChanged(event) {
+    if(event.detail.value === 'lists') {
+      this.lists = await this.listsService.getDetailedLists(this.user.id);
+      this.selector = event.detail.value;
+    } else {
+      this.selector = event.detail.value;
+    }
+    
+  }
+
+  getDetails(list) {
+    this.router.navigate(['tabs/profile/lists/details'], {state: list})
   }
 
 }
