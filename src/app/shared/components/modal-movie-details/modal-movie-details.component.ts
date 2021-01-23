@@ -24,6 +24,8 @@ export class ModalMovieDetailsComponent implements OnInit {
 
   @Input() movie: Movie;
   @Input() images: any;
+  @Input() platforms: any;
+
   seen: boolean;
   saved: boolean;
 

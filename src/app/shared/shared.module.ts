@@ -11,6 +11,7 @@ import { ModalSignupComponent } from './components/modal-signup/modal-signup.com
 import { ModalSigninComponent } from './components/modal-signin/modal-signin.component';
 import { LoginSignupModalComponent } from './components/login-signup-modal/login-signup-modal.component';
 import { ListElementComponent } from './components/list-element/list-element.component';
+import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
 
 
 
@@ -23,7 +24,8 @@ import { ListElementComponent } from './components/list-element/list-element.com
                  ModalSignupComponent, 
                  ModalSigninComponent,
                  LoginSignupModalComponent,
-                 ListElementComponent ],
+                 ListElementComponent,
+                 WhereWatchCountryPipe ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),

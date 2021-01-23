@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -15,6 +16,7 @@ export class ProfilePage implements OnInit {
   seen;
   saved;
   user;
+  subscribe: Subscription;
 
   selector: string = 'seen';
 
@@ -31,7 +33,8 @@ export class ProfilePage implements OnInit {
       this.presentModal();
     } else {
       const uid = await this.authService.getUserId();
-      this.user = await this.userService.getUser(uid).pipe(first()).toPromise();
+      // this.user = await this.userService.getUser(uid).pipe(first()).toPromise();
+      this.subscribe = this.userService.getUser(uid).subscribe(data => this.user = data);
       console.log(this.user);
     }
   }

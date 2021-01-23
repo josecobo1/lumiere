@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 
@@ -15,8 +16,12 @@ export class SearchPage implements OnInit {
   movies: any;
   searchCriteria: string;
   reference = 'title';
+  region; 
 
-  constructor(private movieService: MoviesService, public modalController: ModalController, private router: Router) { }
+  constructor(private movieService: MoviesService, 
+              public modalController: ModalController, 
+              private router: Router,
+              public geolocation: GeolocationService) { }
 
   ngOnInit() {
   }
@@ -53,10 +58,15 @@ export class SearchPage implements OnInit {
   async presentModal(movie){
 
     let images; 
+    let platforms;
 
     try {
       // Antes de mostrat el modal con los detalles de la película busco las imagenes de la película
       images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+      platforms = await this.movieService.whereToWatch(movie.id).pipe().toPromise();
+      this.region = await this.geolocation.getCurrentLocation();
+      platforms = platforms.results[this.region];
+      console.log('platforms', platforms);
     } catch (error) {
       console.log(`No se han encontrado imagenes de esta película`);
       images = [];
@@ -66,7 +76,8 @@ export class SearchPage implements OnInit {
       component: ModalMovieDetailsComponent,
       componentProps: {
         movie: movie,
-        images: images
+        images: images,
+        platforms: platforms
       }
     });
 

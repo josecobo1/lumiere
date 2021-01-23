@@ -48,6 +48,10 @@
     </ion-row>
   </ion-grid>
 
+  <p *ngIf='platforms'>
+    {{ platforms?.flatrate | json }}
+  </p>
+
   <ion-grid *ngIf='movie.overview'>
     <ion-row>
       <h2>Overview:</h2>
