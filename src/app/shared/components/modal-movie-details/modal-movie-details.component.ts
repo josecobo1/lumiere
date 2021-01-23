@@ -138,18 +138,20 @@ export class ModalMovieDetailsComponent implements OnInit {
   }
 
   // Guarda una película dentro de una lista
-  saveIntoList(movieId){
-    alert(movieId);
+  async saveIntoList(listId){
+    const result = await this.listsService.addMovieToList(this.movie.id, listId);
+    if(result) {
+      this.presentToast('Movie added to your list');
+    } else {
+      this.presentToast('This movie is already on your list');
+    }
   }
 
   // Transforma una lista de objetos clave valor en opciones para el ActionSheetOptions
   transformListObjectIntoActionSheetParameters(lists: any) {
 
-    console.log('array de entrada', lists);
-    console.log(`El array de entrada es mayor que 0: ${lists.length != 0}`)
-
     const options = [];
-    console.log('antes del map');
+
     lists.map(l => {
       const opt = {
         text: l.name,
@@ -161,7 +163,6 @@ export class ModalMovieDetailsComponent implements OnInit {
       options.push(opt);
     });
 
-    console.log(options);
     return options;
     
   }
