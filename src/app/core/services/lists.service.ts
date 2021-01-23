@@ -44,4 +44,15 @@ export class ListsService {
     return list.id;
   }
 
+  // Devuelve un array con los detalles de lista de un usuario
+  async getDetailedLists(uid): Promise<any> {
+    const lists = await this.getUserLists(uid);
+
+    const detailedLists = await Promise.all(lists.map(async (l) =>{
+      return await this.getListDetails(l).pipe(first()).toPromise();
+    } ));
+
+    return detailedLists;
+  }
+
 }

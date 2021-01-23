@@ -162,18 +162,12 @@ export class ModalMovieDetailsComponent implements OnInit {
       // Recupero el uid del usuario
       const userUid = await this.auth.getUserId();
 
-      // Recupero las listas de un usuario
-      const lists = await this.listsService.getUserLists(userUid);
-
-      // Para cada lista que tiene el usuario recupero los dealles de cada una
-      // id, nombre y array de peliculas
-      let listsDetails = await Promise.all(lists.map(async (l) => {
-        return await this.listsService.getListDetails(l).pipe(first()).toPromise();
-      }));
+      // Recupero las listas del usuario
+      const lists = await this.listsService.getDetailedLists(userUid);
 
       // Paso la lista con los detalles de cada lista a la función transform que me devuelve
       // un array con las opciones para el actionsheet
-      const options = this.transformListObjectIntoActionSheetParameters(listsDetails);
+      const options = this.transformListObjectIntoActionSheetParameters(lists);
 
       const actionSheet = await this.actionSheetController.create({
         buttons: [
