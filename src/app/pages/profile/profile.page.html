@@ -61,9 +61,7 @@
 
       </ion-col>
     </ion-row>
-  </ion-grid>
 
-  <ion-grid>
     <ion-row>
       <ion-col>
         <ion-segment (ionChange)='segmentChanged($event)' value='seen'>
@@ -79,9 +77,7 @@
         </ion-segment>
       </ion-col>
     </ion-row>
-  </ion-grid>
 
-  <ion-grid>
     <ion-row *ngIf="selector === 'seen'">
       <ion-col size='12' *ngFor='let movie of user?.seen'>
         <ion-list>
@@ -107,6 +103,7 @@
         </ion-list> -->
       </ion-col>
     </ion-row>
+
   </ion-grid>
 
   <!-- <ion-button (click)='presentModal()'>Login</ion-button>

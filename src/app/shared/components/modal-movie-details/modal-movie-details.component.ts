@@ -29,6 +29,7 @@ export class ModalMovieDetailsComponent implements OnInit {
   seen: boolean;
   saved: boolean;
 
+  // Lista de fake para el action sheet
   lists = [
     {
       name: 'Terminator',
@@ -56,6 +57,7 @@ export class ModalMovieDetailsComponent implements OnInit {
     
   }
 
+  // Abre el modal para iniciar sesión
   async presentModal(){
     const modal = await this.modalController.create({
       component: LoginSignupModalComponent,
@@ -64,6 +66,7 @@ export class ModalMovieDetailsComponent implements OnInit {
     return await modal.present();
   }
 
+  // Guarda en la bbdd una película como vista
   async setAsSeen(){
 
     // Si el usuario ha inicido sesión guardamos la película como vista, en caso contrario la función isLogged 
@@ -86,7 +89,7 @@ export class ModalMovieDetailsComponent implements OnInit {
         await this.isSeen();
         } else {
           await this.userService.removeMovieFromSeen(userUid, this.movie.id);
-          this.presentToast('This movie was already saved as seen');
+          this.presentToast('Movie removed as seen');
           await this.isSeen();
         }
 
@@ -100,6 +103,7 @@ export class ModalMovieDetailsComponent implements OnInit {
      
   }
 
+  // Guarda en la bbdd una película com pendiente de ver
   async setAsToSee(){
 
     if(await this.isUserLogged()) {
@@ -133,6 +137,7 @@ export class ModalMovieDetailsComponent implements OnInit {
     
   }
 
+  // Guarda una película dentro de una lista
   saveIntoList(movieId){
     alert(movieId);
   }
@@ -140,37 +145,29 @@ export class ModalMovieDetailsComponent implements OnInit {
   // Transforma una lista de objetos clave valor en opciones para el ActionSheetOptions
   transformListObjectIntoActionSheetParameters(lists: any) {
 
-    console.log(lists);
+    console.log('array de entrada', lists);
+    console.log(`El array de entrada es mayor que 0: ${lists.length != 0}`)
 
-    let options = [];
-
-    // lists.map(l => {
-    //   console.log(l);
-    //   const opt = {
-    //     text: l.name,
-    //     handler: () => {
-    //       this.saveIntoList(l.id)
-    //     }
-    //   };
-    //   options.push(opt);
-    // })
-    console.log('antes del bucle dentro del transform');
-    lists.forEach(element => {
-      console.log(element);
+    const options = [];
+    console.log('antes del map');
+    lists.map(l => {
       const opt = {
-        text: element.name,
+        text: l.name,
         handler: () => {
-          this.saveIntoList(element.id)
+          this.saveIntoList(l.id)
         }
-      };
+      }
+      console.log(opt);
       options.push(opt);
     });
 
     console.log(options);
-
     return options;
+    
   }
 
+  // Abre el action sheet del dispositivo y permite al usuario seleccionar una lista para guardar la película 
+  // o crear una nueva lista
   async addToList(){
     
     if(await this.isUserLogged()){
@@ -179,30 +176,26 @@ export class ModalMovieDetailsComponent implements OnInit {
       const userUid = await this.auth.getUserId();
 
       // Recupero las listas de un usuario
-      const lists = await this.listsService.getUsersLists(userUid);
-      console.log(lists);
-      let sheetOptions = this.transformListObjectIntoActionSheetParameters(lists);
+      const lists = await this.listsService.getUserLists(userUid);
 
-      // array con objetos sheetOptions
-      let actionSheetOptions = [
-          {
-            text: 'New list',
-            handler: () => {
-              this.newMoviesList();
-            }
-          },
-          ...sheetOptions
-      ];
+      // Para cada lista que tiene el usuario recupero los dealles de cada una
+      // id, nombre y array de peliculas
+      let listsDetails = await Promise.all(lists.map(async (l) => {
+        return await this.listsService.getListDetails(l).pipe(first()).toPromise();
+      }));
 
-      console.log('options', sheetOptions);
-      
-      // Configuro sheetOptions
+      // Paso la lista con los detalles de cada lista a la función transform que me devuelve
+      // un array con las opciones para el actionsheet
+      const options = this.transformListObjectIntoActionSheetParameters(listsDetails);
+
       const actionSheet = await this.actionSheetController.create({
         buttons: [
-          ...actionSheetOptions
+          ...options
         ]
       });
-      await actionSheet.present();
+
+      actionSheet.present();
+
     } else {
       this.presentModal();
     }

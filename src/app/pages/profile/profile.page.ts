@@ -26,6 +26,7 @@ export class ProfilePage implements OnInit {
               public userService: UserService) { }
 
   async ngOnInit() {
+    
     const state = await this.authService.isLogged();
 
     if(state == null){
