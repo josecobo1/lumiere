@@ -33,7 +33,6 @@ export class ProfilePage implements OnInit {
       this.presentModal();
     } else {
       const uid = await this.authService.getUserId();
-      // this.user = await this.userService.getUser(uid).pipe(first()).toPromise();
       this.subscribe = this.userService.getUser(uid).subscribe(data => this.user = data);
       console.log(this.user);
     }
