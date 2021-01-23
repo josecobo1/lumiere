@@ -38,5 +38,10 @@ export class ListsService {
     }
   }
 
+  // Crea una lista en la base de datos
+  createNewList(list): Promise<any> {
+    this.afs.collection('Lists').doc(list.id).set(list);
+    return list.id;
+  }
 
 }

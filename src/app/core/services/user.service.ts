@@ -118,4 +118,20 @@ export class UserService {
     this.afs.collection('Users').doc(userUid).set(user);
   }
 
+  // Añade una lista al usuario
+  async addListToUser(userId, listId) {
+    const user = await this.getUser(userId).pipe(first()).toPromise();
+    console.log(user.lists);
+    const duplicated = user.lists.some(m => m == listId);
+    console.log(`Duplicated: ${duplicated}`);
+    if(duplicated) {
+      return false;
+    } else {
+      user.lists.push(listId);
+      console.log(user);
+      this.afs.collection('Users').doc(user.id).set(user);
+      return true;
+    }
+  }
+
 }

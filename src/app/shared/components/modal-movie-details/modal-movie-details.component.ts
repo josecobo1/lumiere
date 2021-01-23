@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ModalController, ToastController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { Movie } from 'src/app/core/model/movies/movie';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -7,6 +7,7 @@ import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
 import { ModalNewListComponent } from '../modal-new-list/modal-new-list.component';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -20,7 +21,8 @@ export class ModalMovieDetailsComponent implements OnInit {
               public userService: UserService,
               public actionSheetController: ActionSheetController,
               public toast: ToastController,
-              public listsService: ListsService) { }
+              public listsService: ListsService,
+              public alertController: AlertController) { }
 
   @Input() movie: Movie;
   @Input() images: any;
@@ -29,23 +31,7 @@ export class ModalMovieDetailsComponent implements OnInit {
   seen: boolean;
   saved: boolean;
 
-  // Lista de fake para el action sheet
-  lists = [
-    {
-      name: 'Terminator',
-      id: 1
-    },
-    {
-      name: 'Spain is different',
-      id: 2
-    },
-    {
-      name: 'Goya 2020',
-      id: 3
-    }
-  ];
-  
-  // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
+ // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
   async isUserLogged(){
     const state = await this.auth.isLogged();
 
@@ -191,6 +177,12 @@ export class ModalMovieDetailsComponent implements OnInit {
 
       const actionSheet = await this.actionSheetController.create({
         buttons: [
+          {
+            text: 'New list',
+            handler: () => {
+              this.presentAlert();
+            }
+          },
           ...options
         ]
       });
@@ -254,6 +246,48 @@ export class ModalMovieDetailsComponent implements OnInit {
     console.log('nueva lista:', data);
     this.lists.push(data.list);
     
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'New List',
+      inputs: [
+        {
+          name: 'newList',
+          type: 'text',
+          placeholder: 'New list'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel'
+        },
+        {
+          text: 'Create',
+          handler: (data) => {
+            this.createNewList(data.newList);
+          }
+      }
+      ]
+    });
+    await alert.present();
+  }
+
+  async createNewList(listName: string){
+    const list = {
+      id: uuidv4(),
+      name: listName,
+      movies: []
+    }
+    await this.listsService.createNewList(list);
+    const userUid = await this.auth.getUserId();
+    const result = await this.userService.addListToUser(userUid, list.id);
+    if(!result) {
+      this.presentToast('Somethign went wrong');
+    } else {
+      this.saveIntoList(list.id);
+    }
   }
 
 }
