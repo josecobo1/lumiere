@@ -84,6 +84,13 @@ export class SearchPage implements OnInit {
     let images; 
     let platforms;
 
+    const loading = await this.loadingController.create({
+      message: 'Loading',
+      translucent: true
+    });
+
+    await loading.present();
+
     try {
       // Antes de mostrat el modal con los detalles de la película busco las imagenes de la película
       images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
@@ -94,6 +101,8 @@ export class SearchPage implements OnInit {
     } catch (error) {
       console.log(`No se han encontrado imagenes de esta película`);
       images = [];
+    } finally {
+      loading.dismiss();
     }
 
     const modal = await this.modalController.create({
