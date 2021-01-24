@@ -6,7 +6,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
-import { ModalNewListComponent } from '../modal-new-list/modal-new-list.component';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({

@@ -27,7 +27,7 @@ import { ListStoredMoviesComponent } from './components/list-stored-movies/list-
                  LoginSignupModalComponent,
                  ListElementComponent,
                  WhereWatchCountryPipe,
-                ListStoredMoviesComponent ],
+                 ListStoredMoviesComponent ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),
