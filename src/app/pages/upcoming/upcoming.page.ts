@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { UpcomingMovies } from 'src/app/core/model/movies/upcoming-movies';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { MoviesService } from 'src/app/core/services/movies.service';
@@ -15,33 +15,39 @@ export class UpcomingPage implements OnInit {
   constructor(private moviesService: MoviesService, 
               public modalController: ModalController,
               public geolocationService: GeolocationService,
-              public toastController: ToastController) { }
+              public toastController: ToastController,
+              public loadingController: LoadingController) { }
 
   upcomingMovies: UpcomingMovies;
   region: any;
 
   async ngOnInit() {
 
-    console.log('ngOnInit');
-
     try {
-      console.log('try region');
-      this.region = await this.geolocationService.getCurrentLocation();
-      console.log(this.region);
+      const loading = await this.loadingController.create({
+        message: 'Loading',
+        translucent: true
+      });
+
+      await loading.present();
+
+      await this.getRegion();
+      await this.getUpcomingMovies();
+
+      loading.dismiss();
+      
     } catch (error) {
-      this.presentToast(`Can't get your current location`);
-      console.log(error);
+      this.presentToast('Oops somethign went wrong please try later');
     }
 
-    try {
-      console.log('try upcoming movies');
-      this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
-      console.log(this.upcomingMovies);
-    } catch (error) {
-      this.presentToast(`Can't get the upcoming movie listfor your location, please try again later`);
-      console.log(error);
-    }
+  }
 
+  async getRegion(){
+    this.region = await this.geolocationService.getCurrentLocation();
+  }
+
+  async getUpcomingMovies() {
+    this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
   }
 
   async presentToast(message){
