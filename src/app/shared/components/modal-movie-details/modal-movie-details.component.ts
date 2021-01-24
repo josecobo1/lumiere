@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActionSheetController, AlertController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { Movie } from 'src/app/core/model/movies/movie';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -21,7 +21,8 @@ export class ModalMovieDetailsComponent implements OnInit {
               public actionSheetController: ActionSheetController,
               public toast: ToastController,
               public listsService: ListsService,
-              public alertController: AlertController) { }
+              public alertController: AlertController,
+              public loadingController: LoadingController) { }
 
   @Input() movie: Movie;
   @Input() images: any;
@@ -203,11 +204,21 @@ export class ModalMovieDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    const loading = await this.loadingController.create({
+      message: 'Loading',
+      translucent: true
+    });
+
+    await loading.present();
+
     const logged = await this.isUserLogged();
     if(logged) {
       this.isSeen();
       this.isSaved();
     }
+
+    loading.dismiss();
   }
 
   dismissModal() {
