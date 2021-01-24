@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -28,7 +28,8 @@ export class ProfilePage implements OnInit {
               public toastController: ToastController,
               public userService: UserService,
               public listsService: ListsService,
-              public router: Router) { }
+              public router: Router,
+              public loadinController: LoadingController) { }
 
   async ngOnInit() {
 
@@ -38,10 +39,29 @@ export class ProfilePage implements OnInit {
       console.timeLog('no session');
       this.presentModal();
     } else {
-      const uid = await this.authService.getUserId();
-      this.subscribe = this.userService.getUser(uid).subscribe(data => this.user = data);
-      console.log(this.user);
+      try {
+        const loading = await this.loadinController.create({
+          message: 'Loading',
+          translucent: true
+        });
+
+        await loading.present();
+
+        await this.getUserData();
+
+        loading.dismiss();
+        
+      } catch (error) {
+        console.log('Some error ocurred');
+      }
+      
     }
+  }
+
+  async getUserData() {
+    const uid = await this.authService.getUserId();
+    this.subscribe = this.userService.getUser(uid).subscribe(data => this.user = data);
+    console.log(this.user);
   }
 
   async presentModal(){
