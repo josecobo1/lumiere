@@ -18,6 +18,9 @@ export class SearchPage implements OnInit {
   reference = 'title';
   region; 
 
+  pageCounter = 1;
+  lastPage = null;
+
   constructor(private movieService: MoviesService, 
               public modalController: ModalController, 
               private router: Router,
@@ -51,7 +54,7 @@ export class SearchPage implements OnInit {
         switch(this.reference){
           case ('title'):
             this.movies = [];
-            this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
+            this.movies = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
             break;
           case('cast'):
             console.log('busca por cast');
@@ -126,6 +129,36 @@ export class SearchPage implements OnInit {
   getMovieList(cast){
     console.log(cast.known_for);
     this.router.navigate(['tabs/search/cast'], {state: cast});
+  }
+
+  loadMoreMovies(event) {
+
+    if(this.pageCounter == this.lastPage){
+      event.target.disabled = true;
+    } else {
+      this.pageCounter++;
+      this.getMoreMoviesByTitle(event);
+    }
+    
+  }
+
+  async getMoviesByTitle(event?){
+    this.movies = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
+    this.lastPage = parseInt(this.movies.total_pages);
+  }
+
+  async getMoreMoviesByTitle(event){
+
+    try {
+      const movies = await await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
+      this.movies.results.push(...movies.results);
+      if(event){
+        event.target.complete();
+      }    
+    } catch (error) {
+      this.presentToast('Something went wrong please try again later');
+    }
+  
   }
 
 }

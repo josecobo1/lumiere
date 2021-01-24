@@ -41,6 +41,13 @@
         <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
       </ion-col>
     </ion-row>
+    
+    <ion-infinite-scroll threshold='100px' (ionInfinite)='loadMoreMovies($event)'>
+      <ion-infinite-scroll-content
+        loadingSpinner='bubbles'
+        loadingText='Loading...'>
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 
     <ion-row *ngIf="reference === 'cast'">
       <ion-col size='6' *ngFor='let cast of movies?.results'>

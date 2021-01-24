@@ -24,9 +24,9 @@ export class MoviesService {
 
 
   // https://api.themoviedb.org/3/search/movie?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=kill+bill
-  searchMoviesByTitle(query: string): Observable<any> {
-    console.log('busca por title en el service');
-    return this.http.get<any>(`${this.api_url}/search/movie?${this.api_key}&query=${query}`);
+  searchMoviesByTitle(query: string, page: any): Observable<any> {
+    console.log(`Search by title page: ${this.api_url}/search/movie?${this.api_key}&query=${query}&page=${page}`);
+    return this.http.get<any>(`${this.api_url}/search/movie?${this.api_key}&query=${query}&page=${page}`);
   }
 
   // https://api.themoviedb.org/3/search/person?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=quentin+tarantino
