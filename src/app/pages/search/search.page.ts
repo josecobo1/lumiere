@@ -66,10 +66,10 @@ export class SearchPage implements OnInit {
   
       } 
 
-      loading.dismiss();
-
     } catch (error) {
       this.presentToast('Something went worong try again later');
+    } finally {
+      loading.dismiss();
     }
 
   }
