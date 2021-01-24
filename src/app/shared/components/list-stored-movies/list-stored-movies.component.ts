@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ListsService } from 'src/app/core/services/lists.service';
@@ -20,12 +20,31 @@ export class ListStoredMoviesComponent implements OnInit {
   
   constructor(public listsService: ListsService, 
               public movieService: MoviesService,
-              public modalController: ModalController) { }
+              public modalController: ModalController,
+              public loadingContoller: LoadingController) { }
 
   async ngOnInit() {
     this.list = history.state;
     console.log(this.list); 
-    this.movies = await this.listsService.getMoviesFromList(this.list.id);
+    // this.movies = await this.listsService.getMoviesFromList(this.list.id);
+    console.log('list-stored-movies');
+    this.getMovies();
+  }
+
+  async getMovies() {
+    const loading = await this.loadingContoller.create({
+      message: 'Loading',
+      translucent: true,
+    });
+
+    await loading.present();
+
+    try {
+      this.movies = await this.listsService.getMoviesFromList(this.list.id);
+      loading.dismiss();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async presentModal(movie) {
