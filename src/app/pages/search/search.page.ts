@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
@@ -21,31 +21,55 @@ export class SearchPage implements OnInit {
   constructor(private movieService: MoviesService, 
               public modalController: ModalController, 
               private router: Router,
-              public geolocation: GeolocationService) { }
+              public geolocation: GeolocationService,
+              public loadingController: LoadingController,
+              public toastController: ToastController) { }
 
   ngOnInit() {
   }
 
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
+
   async search(){
 
-    if(this.query && this.query.length > 0){
+    const loading = await this.loadingController.create({
+      message: 'Loading',
+      translucent: true
+    });
 
-      switch(this.reference){
-        case ('title'):
-          this.movies = [];
-          this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
-          break;
-        case('cast'):
-          console.log('busca por cast');
-          this.movies = [];
-          this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
-          console.log(this.movies.results);
-          break;
-        case('year'):
-          this.movies = [];
-          this.movies = await this.movieService.searchMoviesByYear(this.query).pipe().toPromise();
-      }
+    await loading.present();
 
+    try {
+      if(this.query && this.query.length > 0){
+
+        switch(this.reference){
+          case ('title'):
+            this.movies = [];
+            this.movies = await this.movieService.searchMoviesByTitle(this.query).pipe().toPromise();
+            break;
+          case('cast'):
+            console.log('busca por cast');
+            this.movies = [];
+            this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
+            console.log(this.movies.results);
+            break;
+          case('year'):
+            this.movies = [];
+            this.movies = await this.movieService.searchMoviesByYear(this.query).pipe().toPromise();
+        }
+  
+      } 
+
+      loading.dismiss();
+
+    } catch (error) {
+      this.presentToast('Something went worong try again later');
     }
 
   }
