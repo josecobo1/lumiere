@@ -12,10 +12,15 @@ export class ListsService {
 
   constructor(private afs: AngularFirestore, private user: UserService, public moviesService: MoviesService) { }
 
-  // Recupera toda la info del usuario con el service User
+  // Recupera todas las listas que un usuario està siguiendo
   async getUserLists(uid) {
     const user = await this.user.getUser(uid).pipe(first()).toPromise();
     return user.lists;
+  }
+
+  // Recupera todas las listas que son propiedad de un usuario
+  getUserOwnedLists(uid): Observable<any> {
+    return this.afs.collection('Lists', ref => ref.where('owner', '==', uid)).valueChanges();
   }
 
   // Lista por id

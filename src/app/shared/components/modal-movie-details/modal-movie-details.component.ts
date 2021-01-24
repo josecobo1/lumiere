@@ -163,7 +163,8 @@ export class ModalMovieDetailsComponent implements OnInit {
       const userUid = await this.auth.getUserId();
 
       // Recupero las listas del usuario
-      const lists = await this.listsService.getDetailedLists(userUid);
+      // const lists = await this.listsService.getDetailedLists(userUid);
+      const lists = await this.listsService.getUserOwnedLists(userUid).pipe(first()).toPromise();
 
       // Paso la lista con los detalles de cada lista a la función transform que me devuelve
       // un array con las opciones para el actionsheet
@@ -177,7 +178,10 @@ export class ModalMovieDetailsComponent implements OnInit {
               this.presentAlert();
             }
           },
-          ...options
+          ...options,{
+            text: 'Cancel',
+            role: 'cancel'
+          }
         ]
       });
 
@@ -231,16 +235,16 @@ export class ModalMovieDetailsComponent implements OnInit {
     console.log('saved:', this.saved);
   }
 
-  async newMoviesList() {
-    const modal = await this.modalController.create({
-      component: ModalNewListComponent
-    });
-    await modal.present();
-    const { data } = await modal.onDidDismiss();
-    console.log('nueva lista:', data);
-    this.lists.push(data.list);
+  // async newMoviesList() {
+  //   const modal = await this.modalController.create({
+  //     component: ModalNewListComponent
+  //   });
+  //   await modal.present();
+  //   const { data } = await modal.onDidDismiss();
+  //   console.log('nueva lista:', data);
+  //   // this.lists.push(data.list);
     
-  }
+  // }
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -269,13 +273,16 @@ export class ModalMovieDetailsComponent implements OnInit {
   }
 
   async createNewList(listName: string){
+
+    const userUid = await this.auth.getUserId();
+
     const list = {
       id: uuidv4(),
+      owner: userUid,
       name: listName,
       movies: []
     }
     await this.listsService.createNewList(list);
-    const userUid = await this.auth.getUserId();
     const result = await this.userService.addListToUser(userUid, list.id);
     if(!result) {
       this.presentToast('Somethign went wrong');
