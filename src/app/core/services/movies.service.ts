@@ -64,4 +64,11 @@ export class MoviesService {
     return this.http.get<any>(`${this.api_url}/movie/${id}/watch/providers?${this.api_key}`);
   }
 
+  // Devuelve la lista de generos y su id
+  // https://api.themoviedb.org/3/genre/movie/list?api_key=5d8c3de3e2543b591b9b443d64c7b56f
+  getGenresList(): Observable<any> {
+    console.log(`${this.api_url}/genre/movie/list?${this.api_key}`);
+    return this.http.get<any>(`${this.api_url}/genre/movie/list?${this.api_key}`);
+  }
+
 }

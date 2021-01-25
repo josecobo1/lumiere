@@ -13,6 +13,7 @@ import { LoginSignupModalComponent } from './components/login-signup-modal/login
 import { ListElementComponent } from './components/list-element/list-element.component';
 import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
 import { ListStoredMoviesComponent } from './components/list-stored-movies/list-stored-movies.component';
+import { GenrePipe } from './pipes/genre.pipe';
 
 
 
@@ -27,7 +28,8 @@ import { ListStoredMoviesComponent } from './components/list-stored-movies/list-
                  LoginSignupModalComponent,
                  ListElementComponent,
                  WhereWatchCountryPipe,
-                 ListStoredMoviesComponent ],
+                 ListStoredMoviesComponent,
+                 GenrePipe ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),

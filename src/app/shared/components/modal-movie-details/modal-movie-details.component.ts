@@ -37,6 +37,13 @@ export class ModalMovieDetailsComponent implements OnInit {
   images: any;
   platforms: any;
   region: any;
+  movieObject: any;
+
+  // Recupera los detalles de la película
+  async getMovieDetails() {
+    this.movieObject = await this.moviesService.getMovieById(this.movie.id).pipe().toPromise();
+    console.log('movieObject', this.movieObject);
+  }
 
   // Recupero la ubicación del usuario
   async getLocation(){
@@ -45,12 +52,12 @@ export class ModalMovieDetailsComponent implements OnInit {
 
   // Recupera todas las imagenes de una película
   async getMovieImages(){
-    this.images = await this.moviesService.getMovieImages(this.movie.id).pipe().toPromise();
+    this.images = await this.moviesService.getMovieImages(this.movieObject.id).pipe().toPromise();
   }
 
   // Recupera las plaaformas sónde ver una película
   async getPlatforms() {
-    this.platforms = await this.moviesService.whereToWatch(this.movie.id).pipe().toPromise();
+    this.platforms = await this.moviesService.whereToWatch(this.movieObject.id).pipe().toPromise();
     this.platforms = this.platforms.results[this.region];
   }
 
@@ -241,6 +248,7 @@ export class ModalMovieDetailsComponent implements OnInit {
       this.isSaved();
     }
 
+    await this.getMovieDetails();
     await this.getLocation();
     await this.getMovieImages();
     await this.getPlatforms();
