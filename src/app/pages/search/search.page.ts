@@ -54,16 +54,19 @@ export class SearchPage implements OnInit {
         switch(this.reference){
           case ('title'):
             this.movies = [];
+            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
             this.movies = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
             break;
           case('cast'):
             console.log('busca por cast');
             this.movies = [];
+            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
             this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
             console.log(this.movies.results);
             break;
           case('year'):
             this.movies = [];
+            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
             this.movies = await this.movieService.searchMoviesByYear(this.query).pipe().toPromise();
         }
   
@@ -79,6 +82,7 @@ export class SearchPage implements OnInit {
 
   cancel(){
     console.log('cancel');
+    this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
     this.movies = [];
   }
 
@@ -122,6 +126,7 @@ export class SearchPage implements OnInit {
 
   segmentChange(event){
     console.log(event.detail.value);
+    this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
     this.reference = event.detail.value;
     this.search();
   }

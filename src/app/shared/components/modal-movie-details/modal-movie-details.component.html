@@ -11,60 +11,80 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size='6'>
-        <!-- <ion-img [src]=" 'http://image.tmdb.org/t/p/w400/' + movie.poster_path "></ion-img> -->
-        <ion-img [src]="movie.poster_path | posterImg" ></ion-img>
+      <ion-col size='12'>
+        <ion-slides pager='true' [options]='slideOpts'>
+          <ion-slide *ngFor='let image of images.backdrops'>
+            <ion-img [src]='image.file_path | posterImg '></ion-img>
+          </ion-slide>
+        </ion-slides>
       </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size='12'>
+        <h1>{{ movie.title }}</h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size='12'>
+        {{ movie.overview }}
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col size='6'>
-        <ion-text>
-          <h3>Title: {{ movie.title }}</h3>
-        </ion-text>
-        <ion-text>
-          <h3>Original language: {{ movie.original_language }}</h3>
-        </ion-text>
-        <ion-text>
-          <h3>Release date: {{ movie.release_date }}</h3>
-        </ion-text>
-        <!-- Botones para guardar como vista, pendiente o meter en una lista -->
+        <ion-chip *ngFor='let platform of platforms?.flatrate'>
+          <ion-label>{{ platform.provider_name }}</ion-label>
+        </ion-chip>
+        <!-- {{ platforms | json }} -->
+      </ion-col>
+
+      <ion-col size='6'>
         <ion-buttons>
-          <!-- Película vista -->
           <ion-button (click)='setAsSeen()'>
             <ion-icon *ngIf='!seen' name="eye-outline"></ion-icon>
             <ion-icon *ngIf='seen' name="eye"></ion-icon>
           </ion-button>
 
-          <!-- Guardar para ver después -->
-        <ion-button (click)='setAsToSee()'>
-          <ion-icon *ngIf='!saved' name="bookmark-outline"></ion-icon>
-          <ion-icon *ngIf='saved' name="bookmark"></ion-icon>
-        </ion-button>
+          <ion-button (click)='setAsToSee()'>
+            <ion-icon *ngIf='!saved' name="bookmark-outline"></ion-icon>
+            <ion-icon *ngIf='saved' name="bookmark"></ion-icon>
+          </ion-button>
 
-        <!-- Guardar en una lista -->
-        <ion-button (click)='addToList()'>
-          <ion-icon name="list-outline"></ion-icon>
-        </ion-button>
+          <ion-button (click)='addToList()'>
+            <ion-icon name="list-outline"></ion-icon>
+          </ion-button>
         </ion-buttons>
+        
+      </ion-col>
+      
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list lines='full'>
+          <ion-item>
+            <ion-label>
+              <h2>Language</h2>
+              <h3>{{ movie.original_language }}</h3>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Release date</h2>
+              <h3>{{ movie.release_date }}</h3>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Genre's</h2>
+              <h3>{{ movie.genre_ids | json }}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <p *ngIf='platforms'>
-    {{ platforms?.flatrate | json }}
-  </p>
-
-  <ion-grid *ngIf='movie.overview'>
-    <ion-row>
-      <h2>Overview:</h2>
-    </ion-row>
-    <ion-row>
-      <ion-col size='12'>{{ movie.overview }}</ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-slides pager='true' [options]='slideOpts'>
-    <ion-slide *ngFor='let image of images.backdrops'>
-      <ion-img [src]='image.file_path | posterImg '></ion-img>
-    </ion-slide>
-  </ion-slides>
 
 </ion-content>

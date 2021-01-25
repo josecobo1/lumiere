@@ -37,7 +37,7 @@
   <ion-grid>
 
     <ion-row *ngIf="reference === 'title'">
-      <ion-col size='6' *ngFor='let movie of movies?.results'>
+      <ion-col size='4' *ngFor='let movie of movies?.results'>
         <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
       </ion-col>
     </ion-row>

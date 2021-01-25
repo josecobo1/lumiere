@@ -219,6 +219,8 @@ export class ModalMovieDetailsComponent implements OnInit {
     }
 
     loading.dismiss();
+
+    console.log(this.platforms);
   }
 
   dismissModal() {
