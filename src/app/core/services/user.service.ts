@@ -134,4 +134,22 @@ export class UserService {
     }
   }
 
+  // Seguir - dejar de seguir una lista
+  async followUnfollowList(userId, collectionId): Promise<any> {
+    console.log('parametros', userId, collectionId);
+    let user = await this.getUser(userId).pipe(first()).toPromise();
+    console.log(user);
+    const duplicated = user.lists.some(l => l == collectionId);
+    if(duplicated){
+      const index = user.lists.findIndex(l => l == collectionId);
+      user.lists.splice(index, 1);
+      this.afs.collection('Users').doc(userId).set(user);
+      return false;
+    } else {
+      user.lists.push(collectionId);
+      this.afs.collection('Users').doc(userId).set(user);
+      return true;
+    }
+  }
+
 }

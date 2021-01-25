@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ListsService } from 'src/app/core/services/lists.service';
 
 @Component({
   selector: 'app-collections',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CollectionsPage implements OnInit {
 
-  constructor() { }
+  search: string;
+
+  constructor(public listsService: ListsService) { }
+
+  collections: Array<any>;
 
   ngOnInit() {
+  }
+
+  async getCollections(event){
+    this.collections = await this.listsService.searchLists(event.target.value);
+    console.log(this.collections);
   }
 
 }

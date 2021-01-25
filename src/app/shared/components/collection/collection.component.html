@@ -1,0 +1,14 @@
+<ion-card>
+  <ion-item>
+    <ion-label>{{ collection.name }}</ion-label>
+    <ion-button *ngIf='!isFollowing' [disabled]='isOwner' (click)='followUnfollow(collection.id)' fill="outline" slot="end">Follow</ion-button>
+    <ion-button *ngIf='isFollowing' [disabled]='isOwner' (click)='followUnfollow(collection.id)' fill="outline" slot="end">Unfollow</ion-button>
+  </ion-item>
+  <ion-card-content>
+    <ion-text>
+      <h4 *ngFor='let movie of movies'>
+        {{ movie.original_title }}
+      </h4>
+    </ion-text>
+  </ion-card-content>
+</ion-card>

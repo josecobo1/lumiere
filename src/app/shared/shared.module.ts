@@ -14,6 +14,7 @@ import { ListElementComponent } from './components/list-element/list-element.com
 import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
 import { ListStoredMoviesComponent } from './components/list-stored-movies/list-stored-movies.component';
 import { GenrePipe } from './pipes/genre.pipe';
+import { CollectionComponent } from './components/collection/collection.component';
 
 
 
@@ -29,12 +30,18 @@ import { GenrePipe } from './pipes/genre.pipe';
                  ListElementComponent,
                  WhereWatchCountryPipe,
                  ListStoredMoviesComponent,
-                 GenrePipe ],
+                 GenrePipe,
+                 CollectionComponent ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),
     ReactiveFormsModule
   ],
-  exports: [MoviePosterComponent, ModalMovieDetailsComponent, CastImageComponent, ListElementComponent, ListStoredMoviesComponent]
+  exports: [MoviePosterComponent, 
+            ModalMovieDetailsComponent, 
+            CastImageComponent, 
+            ListElementComponent, 
+            ListStoredMoviesComponent, 
+            CollectionComponent]
 })
 export class SharedModule { }

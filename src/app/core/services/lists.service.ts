@@ -13,11 +13,11 @@ export class ListsService {
   constructor(private afs: AngularFirestore, private user: UserService, public moviesService: MoviesService) { }
 
   // Devuelve un array de Lits por nombre
-  async searchLists(): Promise<any> {
+  async searchLists(search: string): Promise<any> {
     let collections;
     collections = await this.afs.collection('Lists').valueChanges().pipe(first()).toPromise();
     console.log(collections);
-    const result = collections.filter(c => c.name.toLowerCase().includes('mina'.toLowerCase()));
+    const result = collections.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
     return result;
   }
 

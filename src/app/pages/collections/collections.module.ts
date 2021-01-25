@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { CollectionsPageRoutingModule } from './collections-routing.module';
 
 import { CollectionsPage } from './collections.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CollectionsPageRoutingModule
+    CollectionsPageRoutingModule,
+    SharedModule
   ],
   declarations: [CollectionsPage]
 })
