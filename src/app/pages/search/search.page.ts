@@ -100,7 +100,7 @@ export class SearchPage implements OnInit {
 
     try {
       // Antes de mostrat el modal con los detalles de la película busco las imagenes de la película
-      images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
+      //images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
       platforms = await this.movieService.whereToWatch(movie.id).pipe().toPromise();
       this.region = await this.geolocation.getCurrentLocation();
       platforms = platforms.results[this.region];
@@ -116,8 +116,7 @@ export class SearchPage implements OnInit {
       component: ModalMovieDetailsComponent,
       componentProps: {
         movie: movie,
-        images: images,
-        platforms: platforms
+        region: this.region
       }
     });
 

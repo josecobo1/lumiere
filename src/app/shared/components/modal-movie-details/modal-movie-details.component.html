@@ -13,7 +13,7 @@
     <ion-row>
       <ion-col size='12'>
         <ion-slides pager='true' [options]='slideOpts'>
-          <ion-slide *ngFor='let image of images.backdrops'>
+          <ion-slide *ngFor='let image of images?.backdrops'>
             <ion-img [src]='image.file_path | posterImg '></ion-img>
           </ion-slide>
         </ion-slides>

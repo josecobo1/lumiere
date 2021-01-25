@@ -7,6 +7,8 @@ import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
 import { v4 as uuidv4 } from 'uuid';
+import { MoviesService } from 'src/app/core/services/movies.service';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -22,14 +24,35 @@ export class ModalMovieDetailsComponent implements OnInit {
               public toast: ToastController,
               public listsService: ListsService,
               public alertController: AlertController,
-              public loadingController: LoadingController) { }
+              public loadingController: LoadingController,
+              public moviesService: MoviesService,
+              public geolocationService: GeolocationService) { }
 
   @Input() movie: Movie;
-  @Input() images: any;
-  @Input() platforms: any;
+  //@Input() images: any;
+  //@Input() region: any;
 
   seen: boolean;
   saved: boolean;
+  images: any;
+  platforms: any;
+  region: any;
+
+  // Recupero la ubicación del usuario
+  async getLocation(){
+    this.region = await this.geolocationService.getCurrentLocation();
+  }
+
+  // Recupera todas las imagenes de una película
+  async getMovieImages(){
+    this.images = await this.moviesService.getMovieImages(this.movie.id).pipe().toPromise();
+  }
+
+  // Recupera las plaaformas sónde ver una película
+  async getPlatforms() {
+    this.platforms = await this.moviesService.whereToWatch(this.movie.id).pipe().toPromise();
+    this.platforms = this.platforms.results[this.region];
+  }
 
  // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
   async isUserLogged(){
@@ -218,6 +241,10 @@ export class ModalMovieDetailsComponent implements OnInit {
       this.isSaved();
     }
 
+    await this.getLocation();
+    await this.getMovieImages();
+    await this.getPlatforms();
+
     loading.dismiss();
 
     console.log(this.platforms);
@@ -246,17 +273,6 @@ export class ModalMovieDetailsComponent implements OnInit {
     this.saved = await this.userService.isSaved(userUid, this.movie.id);
     console.log('saved:', this.saved);
   }
-
-  // async newMoviesList() {
-  //   const modal = await this.modalController.create({
-  //     component: ModalNewListComponent
-  //   });
-  //   await modal.present();
-  //   const { data } = await modal.onDidDismiss();
-  //   console.log('nueva lista:', data);
-  //   // this.lists.push(data.list);
-    
-  // }
 
   async presentAlert() {
     const alert = await this.alertController.create({
