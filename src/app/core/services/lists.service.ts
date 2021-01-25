@@ -12,6 +12,15 @@ export class ListsService {
 
   constructor(private afs: AngularFirestore, private user: UserService, public moviesService: MoviesService) { }
 
+  // Devuelve un array de Lits por nombre
+  async searchLists(): Promise<any> {
+    let collections;
+    collections = await this.afs.collection('Lists').valueChanges().pipe(first()).toPromise();
+    console.log(collections);
+    const result = collections.filter(c => c.name.toLowerCase().includes('mina'.toLowerCase()));
+    return result;
+  }
+
   // Recupera todas las listas que un usuario està siguiendo
   async getUserLists(uid) {
     const user = await this.user.getUser(uid).pipe(first()).toPromise();

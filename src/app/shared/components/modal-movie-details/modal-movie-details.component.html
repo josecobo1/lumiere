@@ -11,7 +11,7 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size='12'>
+      <ion-col size='12' class="ion-no-padding">
         <ion-slides pager='true' [options]='slideOpts'>
           <ion-slide *ngFor='let image of images?.backdrops'>
             <ion-img [src]='image.file_path | posterImg '></ion-img>
@@ -50,21 +50,21 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row class="ion-justify-content-center">
         
-        <ion-col size='4'>
+        <ion-col size='4' class="ion-text-start">
             <ion-button size='large' fill='clear' (click)='setAsSeen()'>
               <ion-icon *ngIf='!seen' name="eye-outline"></ion-icon>
               <ion-icon *ngIf='seen' name="eye"></ion-icon>
             </ion-button>
         </ion-col>
-        <ion-col size='4'>
+        <ion-col size='4' class="ion-text-start">
             <ion-button size='large' fill='clear' (click)='setAsToSee()'>
               <ion-icon *ngIf='!saved' name="time-outline"></ion-icon>
               <ion-icon *ngIf='saved' name="time"></ion-icon>
             </ion-button>
         </ion-col>
-        <ion-col size='4'>
+        <ion-col size='4' class="ion-text-start">
             <ion-button size='large' fill='clear' (click)='addToList()'>
               <ion-icon name="list-outline"></ion-icon>
             </ion-button>

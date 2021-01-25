@@ -259,6 +259,9 @@ export class ModalMovieDetailsComponent implements OnInit {
     await this.getPlatforms();
     await this.getCast();
 
+    const col = await this.listsService.searchLists();
+    console.log(col);
+
     loading.dismiss();
 
     console.log(this.platforms);
