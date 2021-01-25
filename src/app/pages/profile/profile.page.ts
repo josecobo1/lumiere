@@ -66,7 +66,7 @@ export class ProfilePage implements OnInit {
 
   async presentModal(){
     const modal = await this.modalController.create({
-      component: LoginSignupModalComponent,
+      component: LoginSignupModalComponent
     });
 
     return await modal.present();

@@ -71,4 +71,10 @@ export class MoviesService {
     return this.http.get<any>(`${this.api_url}/genre/movie/list?${this.api_key}`);
   }
 
+  // Devuelve el reparto de una película
+  // https://api.themoviedb.org/3/movie/24/credits?api_key=5d8c3de3e2543b591b9b443d64c7b56f
+  getCast(id): Observable<any>{
+    return this.http.get<any>(`${this.api_url}/movie/${id}/credits?${this.api_key}`);
+  }
+
 }

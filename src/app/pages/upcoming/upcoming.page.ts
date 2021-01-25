@@ -22,31 +22,31 @@ export class UpcomingPage implements OnInit {
   region: any;
 
   async ngOnInit() {
+    const loading = await this.loadingController.create({
+      translucent: true
+    });
 
+    await loading.present();
     try {
-      const loading = await this.loadingController.create({
-        message: 'Loading',
-        translucent: true
-      });
-
-      await loading.present();
-
+      console.log('bloque try del onInit');
       await this.getRegion();
+      console.log('despues de la region');
       await this.getUpcomingMovies();
-
-      loading.dismiss();
-      
     } catch (error) {
       this.presentToast('Oops somethign went wrong please try later');
+    } finally {
+      loading.dismiss();
     }
 
   }
 
   async getRegion(){
+    console.log('get region');
     this.region = await this.geolocationService.getCurrentLocation();
   }
 
   async getUpcomingMovies() {
+    console.log('te upcoming movies');
     this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
   }
 

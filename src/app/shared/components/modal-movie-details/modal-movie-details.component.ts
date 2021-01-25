@@ -38,6 +38,11 @@ export class ModalMovieDetailsComponent implements OnInit {
   platforms: any;
   region: any;
   movieObject: any;
+  cast: any;
+
+  async getCast() {
+    this.cast = await this.moviesService.getCast(this.movie.id).pipe().toPromise();
+  }
 
   // Recupera los detalles de la película
   async getMovieDetails() {
@@ -252,6 +257,7 @@ export class ModalMovieDetailsComponent implements OnInit {
     await this.getLocation();
     await this.getMovieImages();
     await this.getPlatforms();
+    await this.getCast();
 
     loading.dismiss();
 

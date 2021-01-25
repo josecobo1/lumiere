@@ -29,9 +29,9 @@ export class GeolocationService {
       console.log('bloque try');
       let data = await this.geolocation.getCurrentPosition(); // Captura posición gps
       console.log('data', data);
-      let position = await this.getHumanReadableLocation$(data.coords).toPromise(); // Transforma la ubicación gps en información leible
+      let position = await this.getHumanReadableLocation$(data.coords).pipe().toPromise(); // Transforma la ubicación gps en información leible
       console.log('position', position);
-      let region = position.results[1].address_components[5].short_name; // Guardo el codigo de país
+      let region = position.results[0].address_components[5].short_name; // Guardo el codigo de país
       console.log('region', region);
       return region;
     } catch (error) {
