@@ -6,7 +6,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" 
+             [scrollEvents]='true' (ionScrollStart)="logScrollStart()"
+             (ionScroll)="logScrolling($event)"
+            (ionScrollEnd)="logScrollEnd()">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Search</ion-title>
@@ -66,6 +69,8 @@
       </ion-col>
     </ion-row>
 
+    
+
     <!-- <ion-infinite-scroll threshold='100px' (ionInfinite)='getMoreResults($event)'>
       <ion-infinite-scroll-content
         loadingSpinner='bubbles'
@@ -76,3 +81,10 @@
   </ion-grid>
 
 </ion-content>
+
+<!-- fab placed to the bottom start -->
+<ion-fab vertical="bottom" (click)='scrollToTop()' horizontal="end" slot="fixed" *ngIf='pageCounter > 1 || castPageCounter > 1 && reference != "collections"'>
+  <ion-fab-button>
+    <ion-icon name="arrow-up-circle"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { IonContent, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ListsService } from 'src/app/core/services/lists.service';
 import { MoviesService } from 'src/app/core/services/movies.service';
@@ -28,6 +28,7 @@ export class SearchPage implements OnInit {
   castResults: any = [];
   collectionsResult: any = [];
 
+  @ViewChild(IonContent, { static: false}) content: IonContent;
   constructor(private movieService: MoviesService, 
               public modalController: ModalController, 
               private router: Router,
@@ -38,6 +39,19 @@ export class SearchPage implements OnInit {
 
   ngOnInit() {
   }
+
+  fab(){
+    alert('fab button');
+  }
+
+  logScrollStart(){}
+  logScrolling(event){}
+  logScrollEnd(){}
+  scrollToTop(){
+    this.content.scrollToTop(1000);
+  }
+
+
 
   async presentToast(message) {
     const toast = await this.toastController.create({
