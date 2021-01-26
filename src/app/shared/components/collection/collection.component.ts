@@ -21,6 +21,11 @@ export class CollectionComponent implements OnInit {
 
   constructor(public listsService: ListsService, public authService: AuthService, public userService: UserService) { }
 
+  slideOpts = {
+    slidesPerView: 3.5,
+    spaceBetween: 50
+  }
+
   async ngOnInit() {
     try {
       await this.getMoviesFromList();

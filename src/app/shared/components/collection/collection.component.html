@@ -1,4 +1,4 @@
-<ion-card>
+<!-- <ion-card>
   <ion-item>
     <ion-label>{{ collection.name }}</ion-label>
     <ion-button *ngIf='!isFollowing' [disabled]='isOwner' (click)='followUnfollow(collection.id)' fill="outline" slot="end">Follow</ion-button>
@@ -11,4 +11,22 @@
       </h4>
     </ion-text>
   </ion-card-content>
-</ion-card>
+</ion-card> -->
+
+<ion-grid>
+  <ion-row>
+    <ion-col sieze='12'>
+      <h4>
+        {{ collection.name }}
+      </h4>
+    </ion-col>
+  </ion-row>
+
+  <ion-slides [options]='slideOpts'>
+    <ion-slide *ngFor='let movie of movies'>
+      <app-movie-poster [movie]='movie'></app-movie-poster>
+    </ion-slide>
+  </ion-slides>
+  
+</ion-grid>
+

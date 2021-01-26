@@ -2,6 +2,10 @@
 <ion-img [src]='movie.poster_path | posterImg' (click)='getDetails(movie)'></ion-img>
 <!-- <div class="poster" style="background-image: url('{{ movie.poster_path | posterImg }}');"> -->
 
+  <!-- <div class="poster" [ngStyle]="{'background-image': 'url(' + (movie.poster_path | posterImg) + ')'}"> -->
+
+  <!-- </div> -->
+
 <!-- </div> -->
 <h3>
   {{ movie.title }}
