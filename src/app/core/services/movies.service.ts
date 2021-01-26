@@ -32,10 +32,10 @@ export class MoviesService {
   // https://api.themoviedb.org/3/search/person?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=quentin+tarantino
   // https://api.themoviedb.org/3/search/person?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=ana
   // https://api.themoviedb.org/3/search/person?api_key=5d8c3de3e2543b591b9b443d64c7b56f&query=ana
-  searchMoviesByCast(query: string): Observable<any> {
+  searchMoviesByCast(query: string, page: any): Observable<any> {
     console.log('busca por cast en el service');
-    console.log(`${this.api_url}/search/person?${this.api_key}&query=${query}`);
-    return this.http.get<any>(`${this.api_url}/search/person?${this.api_key}&query=${query}`);
+    console.log(`${this.api_url}/search/person?${this.api_key}&query=${query}&page=${page}`);
+    return this.http.get<any>(`${this.api_url}/search/person?${this.api_key}&query=${query}&page=${page}`);
   }
 
   // https://api.themoviedb.org/3/discover/movie?api_key=5d8c3de3e2543b591b9b443d64c7b56f&with_genres=28

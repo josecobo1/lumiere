@@ -9,6 +9,7 @@ import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-mo
 import { v4 as uuidv4 } from 'uuid';
 import { MoviesService } from 'src/app/core/services/movies.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -259,9 +260,7 @@ export class ModalMovieDetailsComponent implements OnInit {
     await this.getPlatforms();
     await this.getCast();
 
-    const col = await this.listsService.searchLists();
-    console.log(col);
-
+    
     loading.dismiss();
 
     console.log(this.platforms);
@@ -325,7 +324,9 @@ export class ModalMovieDetailsComponent implements OnInit {
       id: uuidv4(),
       owner: userUid,
       name: listName,
-      movies: []
+      movies: [],
+      createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a')
     }
     await this.listsService.createNewList(list);
     const result = await this.userService.addListToUser(userUid, list.id);

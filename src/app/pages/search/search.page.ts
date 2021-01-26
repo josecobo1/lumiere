@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
+import { ListsService } from 'src/app/core/services/lists.service';
 import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 
@@ -13,6 +14,7 @@ import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movi
 export class SearchPage implements OnInit {
 
   query: string;
+  queryBk: string = '';
   movies: any;
   searchCriteria: string;
   reference = 'title';
@@ -21,12 +23,18 @@ export class SearchPage implements OnInit {
   pageCounter = 1;
   lastPage = null;
 
+  results: any;
+  titleResults: any = [];
+  castResults: any = [];
+  collectionsResult: any = [];
+
   constructor(private movieService: MoviesService, 
               public modalController: ModalController, 
               private router: Router,
               public geolocation: GeolocationService,
               public loadingController: LoadingController,
-              public toastController: ToastController) { }
+              public toastController: ToastController,
+              public listsService: ListsService) { }
 
   ngOnInit() {
   }
@@ -41,41 +49,36 @@ export class SearchPage implements OnInit {
 
   async search(){
 
-    const loading = await this.loadingController.create({
-      message: 'Loading',
-      translucent: true
-    });
+    if(this.query.length > 0) {
+      if(this.query != this.queryBk) {
+        this.queryBk = this.query;
+      }
+      console.log(this.queryBk != this.queryBk);
+      console.log('query;', this.query);
+      console.log('bk:', this.queryBk);
 
-    await loading.present();
-
-    try {
-      if(this.query && this.query.length > 0){
-
-        switch(this.reference){
-          case ('title'):
-            this.movies = [];
-            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
-            this.movies = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
-            break;
-          case('cast'):
-            console.log('busca por cast');
-            this.movies = [];
-            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
-            this.movies = await this.movieService.searchMoviesByCast(this.query).pipe().toPromise();
-            console.log(this.movies.results);
-            break;
-          case('year'):
-            this.movies = [];
-            this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
-            this.movies = await this.movieService.searchMoviesByYear(this.query).pipe().toPromise();
-        }
+      const loading = await this.loadingController.create({
+        message: 'Loading',
+        translucent: true
+      });
   
-      } 
-
-    } catch (error) {
-      this.presentToast('Something went worong try again later');
-    } finally {
-      loading.dismiss();
+      await loading.present();
+  
+      try {
+        this.titleResults = await this.movieService.searchMoviesByTitle(this.queryBk, this.pageCounter).pipe().toPromise();
+        this.castResults = await this.movieService.searchMoviesByCast(this.queryBk, this.pageCounter).pipe().toPromise();
+        this.collectionsResult = await this.listsService.searchLists(this.queryBk);
+        this.results = {
+          title: this.titleResults,
+          cast: this.castResults,
+          collections: this.collectionsResult
+        };
+        console.log('resultados búsqueda', this.results);
+      } catch (error) {
+        this.presentToast('Something went worong try again later');
+      } finally {
+        loading.dismiss();
+      }
     }
 
   }
@@ -141,21 +144,33 @@ export class SearchPage implements OnInit {
       event.target.disabled = true;
     } else {
       this.pageCounter++;
-      this.getMoreMoviesByTitle(event);
+      this.getMore(event);
     }
     
   }
 
-  async getMoviesByTitle(event?){
-    this.movies = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
-    this.lastPage = parseInt(this.movies.total_pages);
+  async getMoreResults(event?){
+    // this.titleResults = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
+    // this.lastPage = parseInt(this.movies.total_pages);
+    console.log('get more results');
+    if(this.pageCounter == this.lastPage){
+      event.target.disabled = true;
+    } else {
+      this.pageCounter++;
+      this.getMore(event);
+    }
   }
 
-  async getMoreMoviesByTitle(event){
-
+  async getMore(event){
+    console.log('criterio:', this.searchCriteria);
     try {
-      const movies = await await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
-      this.movies.results.push(...movies.results);
+      if(this.reference == 'title'){
+        const movies = await this.movieService.searchMoviesByTitle(this.queryBk, this.pageCounter).pipe().toPromise();
+        this.titleResults.results.push(...movies.results);
+      } else if(this.reference == 'cast') {
+        const cast = await this.movieService.searchMoviesByCast(this.queryBk, this.pageCounter).pipe().toPromise();
+        this.castResults.results(...cast.results);
+      }
       if(event){
         event.target.complete();
       }    
@@ -163,6 +178,29 @@ export class SearchPage implements OnInit {
       this.presentToast('Something went wrong please try again later');
     }
   
+  }
+  
+  castPageCounter: number = 1;
+  
+  async getMorePeope(event?){
+    if(this.castResults.page == this.castResults.total_pages){
+      event.target.disabled = true;
+    } else {
+      this.castPageCounter++;
+      this.getMoreCast(event);
+    }
+  }
+
+  async getMoreCast(event){
+    try {
+      const cast = await this.movieService.searchMoviesByCast(this.queryBk, this.castPageCounter).pipe().toPromise(); 
+      this.castResults.results.push(...cast.results);
+      if(event){
+        event.target.complete();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }

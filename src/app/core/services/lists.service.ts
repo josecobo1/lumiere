@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { MoviesService } from './movies.service';
@@ -48,6 +49,7 @@ export class ListsService {
       return false;
     } else {
       list.movies.push(movieId);
+      list.updatedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
       this.afs.collection('Lists').doc(listId).set(list);
       return true;
     }
