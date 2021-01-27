@@ -22,8 +22,9 @@ export class CollectionComponent implements OnInit {
   constructor(public listsService: ListsService, public authService: AuthService, public userService: UserService) { }
 
   slideOpts = {
-    slidesPerView: 3.5,
-    spaceBetween: 50
+    slidesPerView: 2.5,
+    spaceBetween: 10,
+    autoHeight: true
   }
 
   async ngOnInit() {

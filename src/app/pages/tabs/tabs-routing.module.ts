@@ -39,10 +39,6 @@ const routes: Routes = [
             component: ListStoredMoviesComponent
           }
         ]
-      },
-      {
-        path: 'collections',
-        loadChildren: () => import('./../../pages/collections/collections.module').then( m => m.CollectionsPageModule)
       }
     ]
   },

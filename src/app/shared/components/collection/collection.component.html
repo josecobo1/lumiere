@@ -16,9 +16,11 @@
 <ion-grid>
   <ion-row>
     <ion-col sieze='12'>
-      <h4>
-        {{ collection.name }}
-      </h4>
+      <ion-item>
+        <ion-label>{{ collection.name }}</ion-label>
+        <ion-button *ngIf='!isFollowing' [disabled]='isOwner' (click)='followUnfollow(collection.id)' fill="outline" slot="end">Follow</ion-button>
+        <ion-button *ngIf='isFollowing' [disabled]='isOwner' (click)='followUnfollow(collection.id)' fill="outline" slot="end">Unfollow</ion-button>
+      </ion-item>
     </ion-col>
   </ion-row>
 
@@ -27,6 +29,6 @@
       <app-movie-poster [movie]='movie'></app-movie-poster>
     </ion-slide>
   </ion-slides>
-  
+
 </ion-grid>
 

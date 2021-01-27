@@ -1,5 +1,5 @@
 <!-- <img src="{{ 'http://image.tmdb.org/t/p/w400/' + movie.poster_path }}" alt="" (click)='getDetails(movie)'> -->
-<ion-img [src]='movie.poster_path | posterImg' (click)='getDetails(movie)'></ion-img>
+<img class="ion-no-padding" [src]='movie.poster_path | posterImg' (click)='getDetails(movie)'>
 <!-- <div class="poster" style="background-image: url('{{ movie.poster_path | posterImg }}');"> -->
 
   <!-- <div class="poster" [ngStyle]="{'background-image': 'url(' + (movie.poster_path | posterImg) + ')'}"> -->
@@ -7,7 +7,7 @@
   <!-- </div> -->
 
 <!-- </div> -->
-<h3>
+<!-- <h3>
   {{ movie.title }}
-</h3>
+</h3> -->
 

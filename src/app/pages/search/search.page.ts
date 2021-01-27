@@ -166,13 +166,16 @@ export class SearchPage implements OnInit {
   async getMoreResults(event?){
     // this.titleResults = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
     // this.lastPage = parseInt(this.movies.total_pages);
-    console.log('get more results');
-    if(this.pageCounter == this.lastPage){
-      event.target.disabled = true;
-    } else {
-      this.pageCounter++;
-      this.getMore(event);
+    if(this.queryBk.length > 0 && this.query.length > 0){
+      console.log('get more results');
+      if(this.pageCounter == this.lastPage){
+        event.target.disabled = true;
+      } else {
+        this.pageCounter++;
+        this.getMore(event);
+      }
     }
+    
   }
 
   async getMore(event){
@@ -197,11 +200,14 @@ export class SearchPage implements OnInit {
   castPageCounter: number = 1;
   
   async getMorePeope(event?){
-    if(this.castResults.page == this.castResults.total_pages){
-      event.target.disabled = true;
-    } else {
-      this.castPageCounter++;
-      this.getMoreCast(event);
+    if(this.queryBk.length > 0 && this.query.length > 0){
+      console.log('get more people');
+      if(this.castResults.page == this.castResults.total_pages){
+        event.target.disabled = true;
+      } else {
+        this.castPageCounter++;
+        this.getMoreCast(event);
+      }
     }
   }
 
