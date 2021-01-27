@@ -7,9 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" 
-             [scrollEvents]='true' (ionScrollStart)="logScrollStart()"
-             (ionScroll)="logScrolling($event)"
-            (ionScrollEnd)="logScrollEnd()">
+             [scrollEvents]='true'>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Search</ion-title>
@@ -40,10 +38,10 @@
   <ion-grid>
 
     <ion-row *ngIf="reference === 'title'">
-      <ion-col size='4' *ngFor='let movie of results?.title.results'>
-        <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
+      <ion-col size='4' *ngFor='let movie of searchResults?.title.results'>
+        <app-movie-poster [movie]='movie' (click)='getDetails(movie)'></app-movie-poster>
       </ion-col>
-      <ion-infinite-scroll threshold='100px' (ionInfinite)='getMoreResults($event)'>
+      <ion-infinite-scroll threshold='100px' (ionInfinite)='getMoreMovies($event)'>
         <ion-infinite-scroll-content
           loadingSpinner='bubbles'
           loadingText='Loading...'>
@@ -52,10 +50,10 @@
     </ion-row>
 
     <ion-row *ngIf="reference === 'cast'">
-      <ion-col size='6' *ngFor='let cast of results?.cast.results'>
-        <app-cast-image [cast]='cast' (click)='getMovieList(cast)'></app-cast-image>
+      <ion-col size='6' *ngFor='let cast of searchResults?.cast.results'>
+        <app-cast-image [cast]='cast' (click)='getDetails(cast)'></app-cast-image>
       </ion-col>
-      <ion-infinite-scroll threshold='100px' (ionInfinite)='getMorePeope($event)'>
+      <ion-infinite-scroll threshold='100px' (ionInfinite)='getMorePeople($event)'>
         <ion-infinite-scroll-content
           loadingSpinner='bubbles'
           loadingText='Loading...'>
@@ -64,8 +62,8 @@
     </ion-row>
 
     <ion-row *ngIf="reference === 'collections'">
-      <ion-col size='12' *ngFor='let collection of results?.collections'>
-        <app-collection (details)='presentModal($event)' [collection]='collection'></app-collection>
+      <ion-col size='12' *ngFor='let collection of searchResults?.collections'>
+        <app-collection (details)='getDetails($event)' [collection]='collection'></app-collection>
       </ion-col>
     </ion-row>
 
