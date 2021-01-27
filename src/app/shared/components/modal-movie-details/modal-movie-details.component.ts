@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { Movie } from 'src/app/core/model/movies/movie';
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { MoviesService } from 'src/app/core/services/movies.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import * as moment from 'moment';
+import { totalmem } from 'os';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -18,286 +19,172 @@ import * as moment from 'moment';
 })
 export class ModalMovieDetailsComponent implements OnInit {
 
-  constructor(public modalController: ModalController, 
-              public auth: AuthService, 
+  @Input() isLogged: boolean;
+  @Input() movie: any;
+  @Input() images: any;
+  @Input() user: any;
+  @Input() collections: any;
+  @Input() cast: any;
+  @Input() platforms: any;
+  @Input() isSaved: boolean;
+  @Input() isSeen: boolean;
+  @Input() actionsSheetOptionns: any;
+
+  @Output() seen = new EventEmitter();
+
+  constructor(public modalController: ModalController,
               public userService: UserService,
               public actionSheetController: ActionSheetController,
-              public toast: ToastController,
               public listsService: ListsService,
-              public alertController: AlertController,
-              public loadingController: LoadingController,
-              public moviesService: MoviesService,
-              public geolocationService: GeolocationService) { }
-
-  @Input() movie: Movie;
-  //@Input() images: any;
-  //@Input() region: any;
-
-  seen: boolean;
-  saved: boolean;
-  images: any;
-  platforms: any;
-  region: any;
-  movieObject: any;
-  cast: any;
-
-  async getCast() {
-    this.cast = await this.moviesService.getCast(this.movie.id).pipe().toPromise();
+              public toastController: ToastController,
+              public alertController: AlertController) { }
+  
+  ngOnInit(){
+    console.log(this.isSaved, this.isSeen);
   }
 
-  // Recupera los detalles de la película
-  async getMovieDetails() {
-    this.movieObject = await this.moviesService.getMovieById(this.movie.id).pipe().toPromise();
-    console.log('movieObject', this.movieObject);
-  }
-
-  // Recupero la ubicación del usuario
-  async getLocation(){
-    this.region = await this.geolocationService.getCurrentLocation();
-  }
-
-  // Recupera todas las imagenes de una película
-  async getMovieImages(){
-    this.images = await this.moviesService.getMovieImages(this.movieObject.id).pipe().toPromise();
-  }
-
-  // Recupera las plaaformas sónde ver una película
-  async getPlatforms() {
-    this.platforms = await this.moviesService.whereToWatch(this.movieObject.id).pipe().toPromise();
-    this.platforms = this.platforms.results[this.region];
-  }
-
- // Comprueva si el usuario ha iniciado sesión, en caso contrario muestra el modal para iniciar sesión
-  async isUserLogged(){
-    const state = await this.auth.isLogged();
-
-    if(state == null) {
-      return false;
-    } else {
-      return true;
-    }
-    
-  }
-
-  // Abre el modal para iniciar sesión
-  async presentModal(){
-    const modal = await this.modalController.create({
-      component: LoginSignupModalComponent,
-    });
-
-    return await modal.present();
-  }
-
-  // Guarda en la bbdd una película como vista
-  async setAsSeen(){
-
-    // Si el usuario ha inicido sesión guardamos la película como vista, en caso contrario la función isLogged 
-    // mostrará el modal de inicio de sesión
-    if(await this.isUserLogged()){
-
-      // Recupero el uid del usuario de la base de datos
-      const userUid = await this.auth.getUserId(); 
-
-      try {
-
-        // Uso uid el usuario e id de la película para añadir la pelilcula a vistas
-        // si la película no està marcada como vista el service devuelve true, en caso contrario
-        // devuelve false
-        const result = await this.userService.addMovieToSeen(userUid, this.movie.id);
-
-        if(result){
-          // Toast de confirmación
-        this.presentToast('Movie saved as seen');
-        await this.isSeen();
-        } else {
-          await this.userService.removeMovieFromSeen(userUid, this.movie.id);
-          this.presentToast('Movie removed as seen');
-          await this.isSeen();
+  // Opciones para el slider de imagenes de la película
+  slideOpts = {
+        initialSlide: 1,
+        speed: 400,
+        autoplay: {
+          delay: 3000
         }
-
-      } catch (error) {
-        this.presentToast('Oops something has failed please try again later');
       }
-      
-    } else  {
-      this.presentModal();
-    }
-     
+
+  // Cierra el modal
+  dismissModal(){
+    this.modalController.dismiss();
   }
 
-  // Guarda en la bbdd una película com pendiente de ver
-  async setAsToSee(){
-
-    if(await this.isUserLogged()) {
-
-      // Recupero el uid del usuario de la base de datos
-      const userUid = await this.auth.getUserId();
-
-      try { 
-
-        // Uso uid el usuario e id de la película para añadir la pelilcula a vistas
-        const result = await this.userService.addMovieToSeeLater(userUid, this.movie.id);
-
-        if(result) {
-          // Muestro Toast de confirmación
-          this.presentToast('Movie saved to save later');
-          await this.isSaved();
-        } else {
-          await this.userService.removeMovieFromSeeLater(userUid, this.movie.id);
-          this.presentToast('The movie has been removed from saved');
-          await this.isSaved();
-        }
-
-      } catch (error) {
-        this.presentToast('Ooops something failed please try again later');
-
+  // Guarda como vista
+  async setSeen() {
+    // Reviso si ha iniciado sesión, sinó muestro modal para iniciar sesión
+    if(this.isLogged) {
+      // Reviso si ha visto la pelicula
+      if(this.isSeen){
+        const result = await this.userService.removeMovieFromSeen(this.user.id, this.movie.id);
+        this.toast('Movie marked as seen');
+        this.isSeen ? this.isSeen = false : this.isSeen = true;
+      } else {
+        const result = await this.userService.addMovieToSeen(this.user.id, this.movie.id);
+        this.toast('Movie removed as seen');
+        this.isSeen ? this.isSeen = false : this.isSeen = true;
       }
-      
     } else {
-      this.presentModal();
-    }
-    
-  }
-
-  // Guarda una película dentro de una lista
-  async saveIntoList(listId){
-    const result = await this.listsService.addMovieToList(this.movie.id, listId);
-    if(result) {
-      this.presentToast('Movie added to your list');
-    } else {
-      this.presentToast('This movie is already on your list');
+      // Muestro modal para iniciar sesión
     }
   }
 
-  // Transforma una lista de objetos clave valor en opciones para el ActionSheetOptions
-  transformListObjectIntoActionSheetParameters(lists: any) {
+  // Guarda como ver después
+  async setSave() {
+    if(this.isLogged) {
+      if(this.isSaved) {
+        const result = await this.userService.removeMovieFromSeeLater(this.user.id, this.movie.id);
+        this.toast('Movie saved');
+        this.isSaved ? this.isSaved = false : this.isSaved = true;
+      } else {
+        const result = await this.userService.addMovieToSeeLater(this.user.id, this.movie.id);
+        this.toast('Movie removed from saved');
+        this.isSaved ? this.isSaved = false : this.isSaved = true;
+      }
+    } else {
+      // Muestro modal para iniciar sesión
+    }
+  }
 
-    const options = [];
-
-    lists.map(l => {
-      const opt = {
-        text: l.name,
+  // Genera opciones para el action sheet del modal
+  generateActionSheetOptions(collections: any) {
+    const options = collections.map(c => {
+      return {
+        text: c.name,
         handler: () => {
-          this.saveIntoList(l.id)
+          this.saveIntoColletcion(c.id);
         }
       }
-      console.log(opt);
-      options.push(opt);
     });
-
     return options;
-    
   }
 
-  // Abre el action sheet del dispositivo y permite al usuario seleccionar una lista para guardar la película 
-  // o crear una nueva lista
-  async addToList(){
-    
-    if(await this.isUserLogged()){
+  // Añade a una colección
+  async addToCollection() {
 
-      // Recupero el uid del usuario
-      const userUid = await this.auth.getUserId();
+    const options = this.generateActionSheetOptions(this.collections);
 
-      // Recupero las listas del usuario
-      // const lists = await this.listsService.getDetailedLists(userUid);
-      const lists = await this.listsService.getUserOwnedLists(userUid).pipe(first()).toPromise();
-
-      // Paso la lista con los detalles de cada lista a la función transform que me devuelve
-      // un array con las opciones para el actionsheet
-      const options = this.transformListObjectIntoActionSheetParameters(lists);
-
+    if(this.isLogged){
       const actionSheet = await this.actionSheetController.create({
         buttons: [
           {
-            text: 'New list',
+            text: 'New collection',
             handler: () => {
-              this.presentAlert();
+              this.alert();
             }
           },
-          ...options,{
+          ...options,
+          {
             text: 'Cancel',
             role: 'cancel'
           }
         ]
       });
-
       actionSheet.present();
-
     } else {
-      this.presentModal();
-    }
-
-    
-  }
-
-  // Opciones para el slide de imagenes
-  slideOpts = {
-    initialSlide: 1,
-    speed: 400,
-    autoplay: {
-      delay: 3000
+      // Mostrar modal de login
     }
   }
 
-  async ngOnInit() {
-
-    const loading = await this.loadingController.create({
-      message: 'Loading',
-      translucent: true
-    });
-
-    await loading.present();
-
-    const logged = await this.isUserLogged();
-    if(logged) {
-      this.isSeen();
-      this.isSaved();
+  // Añadir película a una colección
+  async saveIntoColletcion(collectionId) {
+    const result = await this.listsService.addMovieToList(this.movie.id, collectionId);
+    if(result){
+      this.toast('Movie added to the collection');
+    } else {
+      this.toast('This movie is already in this collection');
     }
-
-    await this.getMovieDetails();
-    await this.getLocation();
-    await this.getMovieImages();
-    await this.getPlatforms();
-    await this.getCast();
-
-    
-    loading.dismiss();
-
-    console.log(this.platforms);
   }
 
-  dismissModal() {
-    this.modalController.dismiss();
-  }
-
-  async presentToast(message) {
-    const toast = await this.toast.create({
+  async toast(message){
+    const toast = await this.toastController.create({
       message: message,
-      duration: 2000
+      duration: 500
     });
     toast.present();
   }
 
-  async isSeen(){
-    const userUid = await this.auth.getUserId();
-    this.seen = await this.userService.isSeen(userUid, this.movie.id);
-    console.log('seen', this.saved);
+  // Nueva colección
+  async newCollection(collectionName) {
+
+    // Objeto que representa la coleccion
+    const collection = {
+      id: uuidv4(),
+      owner: this.user.id,
+      name: collectionName,
+      movies: [],
+      createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a')
+    }
+
+    // Guardo la colección en firebase
+    this.listsService.createNewList(collection);
+
+    const result = await this.userService.addListToUser(this.user.id, collection.id);
+
+    if(result){
+      this.saveIntoColletcion(collection.id);
+    } else {
+      this.toast('Something went wrong try later');
+    }
   }
 
-  async isSaved() {
-    const userUid = await this.auth.getUserId();
-    this.saved = await this.userService.isSaved(userUid, this.movie.id);
-    console.log('saved:', this.saved);
-  }
-
-  async presentAlert() {
+  // Alert para nombrar a la nueva colección
+  async alert(){
     const alert = await this.alertController.create({
-      header: 'New List',
+      header: 'New collection',
       inputs: [
         {
-          name: 'newList',
+          name: 'newCollection',
           type: 'text',
-          placeholder: 'New list'
+          placeholder: 'New collection'
         }
       ],
       buttons: [
@@ -308,33 +195,12 @@ export class ModalMovieDetailsComponent implements OnInit {
         {
           text: 'Create',
           handler: (data) => {
-            this.createNewList(data.newList);
+            this.newCollection(data.newCollection);
           }
-      }
+        }
       ]
     });
     await alert.present();
   }
 
-  async createNewList(listName: string){
-
-    const userUid = await this.auth.getUserId();
-
-    const list = {
-      id: uuidv4(),
-      owner: userUid,
-      name: listName,
-      movies: [],
-      createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
-      updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a')
-    }
-    await this.listsService.createNewList(list);
-    const result = await this.userService.addListToUser(userUid, list.id);
-    if(!result) {
-      this.presentToast('Somethign went wrong');
-    } else {
-      this.saveIntoList(list.id);
-    }
   }
-
-}

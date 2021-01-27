@@ -26,8 +26,13 @@ export class AuthService {
   }
 
   // Comprovar si el usuario ha iniciado sesión
-  isLogged(): Promise<any>{
-    return this.afAuth.authState.pipe(first()).toPromise();
+  async isLogged(): Promise<boolean>{
+    const result = await this.afAuth.authState.pipe(first()).toPromise();
+    if(result == null){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // Recupera uid del usuario actual

@@ -70,7 +70,7 @@ export class UserService {
   }
 
   // Elimina películas de la lista de películas vistas
-  async removeMovieFromSeen(userUid, movieId) {
+  async removeMovieFromSeen(userUid, movieId): Promise<any> {
 
     // Recupero la información del usuario
     const user = await this.getUser(userUid).pipe(first()).toPromise();

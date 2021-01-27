@@ -1,3 +1,4 @@
+import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListStoredMoviesComponent } from 'src/app/shared/components/list-stored-movies/list-stored-movies.component';
@@ -47,6 +48,7 @@ const routes: Routes = [
     redirectTo: 'tabs/upcoming',
     pathMatch: 'full'
   }
+
 ];
 
 @NgModule({
