@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Observable } from 'rxjs';
@@ -22,22 +23,19 @@ export class GeolocationService {
     return this.http.get<any>(`${this.googleMapsAPIUrl}?key=${this.googleMapsAPIKey}&latlng=${coordinates.latitude},${coordinates.longitude}`);
   }
 
-  // Captura la ubicación gps del usuario e identifica el país
   async getCurrentLocation() {
-    console.log('current position');
     try {
-      console.log('bloque try');
-      let data = await this.geolocation.getCurrentPosition(); // Captura posición gps
-      console.log('data', data);
-      let position = await this.getHumanReadableLocation$(data.coords).pipe().toPromise(); // Transforma la ubicación gps en información leible
-      console.log('position', position);
-      let region = position.results[0].address_components[5].short_name; // Guardo el codigo de país
-      console.log('region', region);
-      return region;
+      const gps = await this.geolocation.getCurrentPosition();
+      console.log('gps:', gps);
+
+      let adress = await this.getHumanReadableLocation$(gps.coords).pipe().toPromise();
+      console.log('adress', adress);
+
+      const country = adress.results.filter(a => {return a.types.includes('country')});
+      return country[0].address_components[0].short_name
+
     } catch (error) {
-      throw error;
+      console.log('error', error);
     }
-    
   }
-  
 }
