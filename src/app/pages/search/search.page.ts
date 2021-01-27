@@ -7,7 +7,6 @@ import { IonContent, LoadingController, ModalController, ToastController } from 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { ListsService } from 'src/app/core/services/lists.service';
-import { MoviesService } from 'src/app/core/services/movies.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 
 @Component({
@@ -290,7 +289,7 @@ export class SearchPage implements OnInit {
 
   async moreCast(event?){
     try {
-      const cast = await this.movieService
+      const cast = await this.moviesService
         .searchMoviesByCast(this.queryBk, this.castPageCounter)
         .pipe()
         .toPromise();
@@ -310,6 +309,10 @@ export class SearchPage implements OnInit {
     this.movies = [];
   }
 
+  getCastDetails(cast){
+    console.log(cast);
+    this.router.navigate(['tabs/search/cast'], {state: cast});
+  }
 
   // details(event){
   //   console.log(event);

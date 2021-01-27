@@ -51,7 +51,7 @@
 
     <ion-row *ngIf="reference === 'cast'">
       <ion-col size='6' *ngFor='let cast of searchResults?.cast.results'>
-        <app-cast-image [cast]='cast' (click)='getDetails(cast)'></app-cast-image>
+        <app-cast-image [cast]='cast' (click)='getCastDetails(cast)'></app-cast-image>
       </ion-col>
       <ion-infinite-scroll threshold='100px' (ionInfinite)='getMorePeople($event)'>
         <ion-infinite-scroll-content
