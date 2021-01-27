@@ -103,10 +103,15 @@ export class SearchPage implements OnInit {
     this.movies = [];
   }
 
+  details(event){
+    console.log(event);
+  }
+
   async presentModal(movie){
 
     let images; 
     let platforms;
+    console.log(movie);
 
     const loading = await this.loadingController.create({
       message: 'Loading',

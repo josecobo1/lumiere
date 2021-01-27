@@ -65,7 +65,7 @@
 
     <ion-row *ngIf="reference === 'collections'">
       <ion-col size='12' *ngFor='let collection of results?.collections'>
-        <app-collection [collection]='collection'></app-collection>
+        <app-collection (details)='presentModal($event)' [collection]='collection'></app-collection>
       </ion-col>
     </ion-row>
 

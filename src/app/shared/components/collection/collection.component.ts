@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ListsService } from 'src/app/core/services/lists.service';
@@ -19,12 +19,18 @@ export class CollectionComponent implements OnInit {
   isFollowing: boolean;
   user: any;
 
+  @Output() details = new EventEmitter();
+
   constructor(public listsService: ListsService, public authService: AuthService, public userService: UserService) { }
 
   slideOpts = {
     slidesPerView: 2.5,
     spaceBetween: 10,
     autoHeight: true
+  }
+
+  getDetails(movie) {
+    this.details.emit(movie);
   }
 
   async ngOnInit() {
