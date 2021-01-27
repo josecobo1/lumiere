@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { from, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ListsService } from 'src/app/core/services/lists.service';
@@ -96,7 +96,7 @@ export class ProfilePage implements OnInit {
   }
 
   async segmentChanged(event) {
-    if(event.detail.value === 'lists') {
+    if(event.detail.value === 'collections') {
       this.lists = await this.listsService.getDetailedLists(this.user.id);
       this.selector = event.detail.value;
     } else {
