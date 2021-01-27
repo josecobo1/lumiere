@@ -1,16 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { first } from 'rxjs/operators';
-import { Movie } from 'src/app/core/model/movies/movie';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
 import { v4 as uuidv4 } from 'uuid';
-import { MoviesService } from 'src/app/core/services/movies.service';
-import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import * as moment from 'moment';
-import { totalmem } from 'os';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -64,11 +58,11 @@ export class ModalMovieDetailsComponent implements OnInit {
       // Reviso si ha visto la pelicula
       if(this.isSeen){
         const result = await this.userService.removeMovieFromSeen(this.user.id, this.movie.id);
-        this.toast('Movie marked as seen');
+        this.toast('Movie removed as seen');
         this.isSeen ? this.isSeen = false : this.isSeen = true;
       } else {
         const result = await this.userService.addMovieToSeen(this.user.id, this.movie.id);
-        this.toast('Movie removed as seen');
+        this.toast('Movie marked as seen');
         this.isSeen ? this.isSeen = false : this.isSeen = true;
       }
     } else {

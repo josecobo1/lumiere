@@ -79,9 +79,9 @@
     </ion-row>
 
     <ion-row *ngIf="selector === 'seen'">
-      <ion-col size='12' *ngFor='let movie of user?.seen'>
+      <ion-col size='4' *ngFor='let movie of seen'>
         <ion-list>
-          <app-list-element [id]='movie.movie'></app-list-element>
+          <app-movie-poster [movie]='movie' (click)='getDetails(movie)'></app-movie-poster>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -89,16 +89,16 @@
 
   
     <ion-row *ngIf="selector === 'saved'">
-      <ion-col size='12' *ngFor='let movie of user?.saved'>
+      <ion-col size='4' *ngFor='let movie of saved'>
         <ion-list>
-          <app-list-element [id]='movie.movie'></app-list-element>
+          <app-movie-poster [movie]='movie' (click)='getDetails(movie)'></app-movie-poster>
         </ion-list>
       </ion-col>
     </ion-row>
   
     <ion-row *ngIf="selector === 'collections'">
-      <ion-col size='12' *ngFor='let collection of lists'>
-        <app-collection (details)='getModal($event)' [collection]='collection'></app-collection>
+      <ion-col size='12' *ngFor='let collection of collections'>
+        <app-collection (details)='getDetails($event)' [collection]='collection'></app-collection>
       </ion-col>
     </ion-row>
 

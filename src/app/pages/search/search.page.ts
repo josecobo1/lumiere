@@ -274,7 +274,7 @@ export class SearchPage implements OnInit {
 
   async moreMovies(event){
     try {
-      const movies = await this.movieService
+      const movies = await this.moviesService
         .searchMoviesByTitle(this.queryBk, this.moviesPageCounter)
         .pipe()
         .toPromise();
@@ -313,130 +313,5 @@ export class SearchPage implements OnInit {
     console.log(cast);
     this.router.navigate(['tabs/search/cast'], {state: cast});
   }
-
-  // details(event){
-  //   console.log(event);
-  // }
-
-  // async presentModal(movie){
-
-  //   let images; 
-  //   let platforms;
-  //   console.log(movie);
-
-  //   const loading = await this.loadingController.create({
-  //     message: 'Loading',
-  //     translucent: true
-  //   });
-
-  //   await loading.present();
-
-  //   try {
-  //     // Antes de mostrat el modal con los detalles de la película busco las imagenes de la película
-  //     //images = await this.movieService.getMovieImages(movie.id).pipe().toPromise();
-  //     platforms = await this.movieService.whereToWatch(movie.id).pipe().toPromise();
-  //     this.region = await this.geolocation.getCurrentLocation();
-  //     platforms = platforms.results[this.region];
-  //     console.log('platforms', platforms);
-  //   } catch (error) {
-  //     console.log(`No se han encontrado imagenes de esta película`);
-  //     images = [];
-  //   } finally {
-  //     loading.dismiss();
-  //   }
-
-  //   const modal = await this.modalController.create({
-  //     component: ModalMovieDetailsComponent,
-  //     componentProps: {
-  //       movie: movie,
-  //       region: this.region
-  //     }
-  //   });
-
-  //   return await modal.present();
-  // }
-
-  // segmentChange(event){
-  //   console.log(event.detail.value);
-  //   this.pageCounter = 1; // al cambiar el creiterio de busca reinicio el contador de pàginas
-  //   this.reference = event.detail.value;
-  //   this.search();
-  // }
-
-  // getMovieList(cast){
-  //   console.log(cast.known_for);
-  //   this.router.navigate(['tabs/search/cast'], {state: cast});
-  // }
-
-  // loadMoreMovies(event) {
-
-  //   if(this.pageCounter == this.lastPage){
-  //     event.target.disabled = true;
-  //   } else {
-  //     this.pageCounter++;
-  //     this.getMore(event);
-  //   }
-    
-  // }
-
-  // async getMoreResults(event?){
-  //   // this.titleResults = await this.movieService.searchMoviesByTitle(this.query, this.pageCounter).pipe().toPromise();
-  //   // this.lastPage = parseInt(this.movies.total_pages);
-  //   if(this.queryBk.length > 0 && this.query.length > 0){
-  //     console.log('get more results');
-  //     if(this.pageCounter == this.lastPage){
-  //       event.target.disabled = true;
-  //     } else {
-  //       this.pageCounter++;
-  //       this.getMore(event);
-  //     }
-  //   }
-    
-  // }
-
-  // async getMore(event){
-  //   console.log('criterio:', this.searchCriteria);
-  //   try {
-  //     if(this.reference == 'title'){
-  //       const movies = await this.movieService.searchMoviesByTitle(this.queryBk, this.pageCounter).pipe().toPromise();
-  //       this.titleResults.results.push(...movies.results);
-  //     } else if(this.reference == 'cast') {
-  //       const cast = await this.movieService.searchMoviesByCast(this.queryBk, this.pageCounter).pipe().toPromise();
-  //       this.castResults.results(...cast.results);
-  //     }
-  //     if(event){
-  //       event.target.complete();
-  //     }    
-  //   } catch (error) {
-  //     this.presentToast('Something went wrong please try again later');
-  //   }
-  
-  // }
-  
-  // castPageCounter: number = 1;
-  
-  // async getMorePeope(event?){
-  //   if(this.queryBk.length > 0 && this.query.length > 0){
-  //     console.log('get more people');
-  //     if(this.castResults.page == this.castResults.total_pages){
-  //       event.target.disabled = true;
-  //     } else {
-  //       this.castPageCounter++;
-  //       this.getMoreCast(event);
-  //     }
-  //   }
-  // }
-
-  // async getMoreCast(event){
-  //   try {
-  //     const cast = await this.movieService.searchMoviesByCast(this.queryBk, this.castPageCounter).pipe().toPromise(); 
-  //     this.castResults.results.push(...cast.results);
-  //     if(event){
-  //       event.target.complete();
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
 }

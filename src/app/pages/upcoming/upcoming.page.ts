@@ -180,46 +180,4 @@ export class UpcomingPage implements OnInit {
 
   }
 
-  // OLD
-
-  // async getRegion(){
-  //   console.log('get region');
-  //   this.region = await this.geolocationService.getCurrentLocation();
-  // }
-
-  // async getUpcomingMovies() {
-  //   console.log('te upcoming movies');
-  //   this.upcomingMovies = await this.moviesService.getUpcomingMovies$(this.region).pipe().toPromise();
-  // }
-
-  // async presentToast(message){
-  //   const toast = await this.toastController.create({
-  //     message: message,
-  //     duration: 4000,
-  //     translucent: true
-  //   });
-
-  //   toast.present();
-  // }
-
-  // getDetails(movie){
-  //   console.log('modal', movie);
-  // }
-
-  // async presentModal(movie) {
-
-  //   const images = await this.moviesService.getMovieImages(movie.id).pipe().toPromise();
-  //   console.log('fotos de la peli', images);
-
-  //   const modal = await this.modalController.create({
-  //     component: ModalMovieDetailsComponent,
-  //     componentProps: {
-  //       movie: movie,
-  //       images: images
-  //     }
-  //   });
-
-  //   return await modal.present();
-  // }
-
 }
