@@ -1,3 +1,4 @@
+import { MoviesService } from 'src/app/core/services/movies.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
@@ -7,6 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from 'src/app/shared/components/login-signup-modal/login-signup-modal.component';
+import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +31,8 @@ export class ProfilePage implements OnInit {
               public userService: UserService,
               public listsService: ListsService,
               public router: Router,
-              public loadinController: LoadingController) { }
+              public loadinController: LoadingController,
+              public moviesService: MoviesService) { }
 
   async ngOnInit() {
 
@@ -56,6 +59,20 @@ export class ProfilePage implements OnInit {
       }
       
     }
+  }
+
+  async getModal(movie) {
+
+    const images = await this.moviesService.getMovieImages(movie.id).pipe().toPromise();
+    
+    const modal = await this.modalController.create({
+      component: ModalMovieDetailsComponent,
+      componentProps: {
+        movie: movie,
+        images: images
+      }
+    });
+    return await modal.present();
   }
 
   async getUserData() {

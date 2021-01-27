@@ -31,6 +31,7 @@
     <ion-row>
       <ion-col size='12'>
         <h1>{{ movieObject?.title }}</h1>
+        <h6>{{ movieObject?.tagline }}</h6>
         <ion-chip *ngFor='let genre of movieObject?.genres'>
           <ion-label>{{ genre.id | genre | async }}</ion-label>
         </ion-chip>
