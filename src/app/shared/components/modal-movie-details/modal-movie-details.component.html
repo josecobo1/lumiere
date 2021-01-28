@@ -51,7 +51,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center">
+    <ion-row>
         
         <ion-col size='4' class="ion-text-start">
             <ion-button size='large' fill='clear' (click)='setSeen()'>
@@ -59,13 +59,13 @@
               <ion-icon *ngIf='isSeen' name="eye"></ion-icon>
             </ion-button>
         </ion-col>
-        <ion-col size='4' class="ion-text-start">
+        <ion-col size='4' class='ion-text-center'>
             <ion-button size='large' fill='clear' (click)='setSave()'>
               <ion-icon *ngIf='!isSaved' name="time-outline"></ion-icon>
               <ion-icon *ngIf='isSaved' name="time"></ion-icon>
             </ion-button>
         </ion-col>
-        <ion-col size='4' class="ion-text-start">
+        <ion-col size='4' class="ion-text-end">
             <ion-button size='large' fill='clear' (click)='addToCollection()'>
               <ion-icon name="list-outline"></ion-icon>
             </ion-button>

@@ -55,6 +55,7 @@ export class MoviesService {
 
   // https://api.themoviedb.org/3/movie/24?api_key=5d8c3de3e2543b591b9b443d64c7b56f
   getMovieById(id): Observable<Movie> {
+    console.log(`${this.api_url}/movie/${id}?${this.api_key}`);
     return this.http.get<Movie>(`${this.api_url}/movie/${id}?${this.api_key}`);
   }
 

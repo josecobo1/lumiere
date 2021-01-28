@@ -97,7 +97,7 @@
     </ion-row>
   
     <ion-row *ngIf="selector === 'collections'">
-      <ion-col size='12' *ngFor='let collection of collections'>
+      <ion-col size='12' *ngFor='let collection of lists'>
         <app-collection (details)='getDetails($event)' [collection]='collection'></app-collection>
       </ion-col>
     </ion-row>
