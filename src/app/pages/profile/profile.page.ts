@@ -9,6 +9,7 @@ import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from 'src/app/shared/components/login-signup-modal/login-signup-modal.component';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
+import { PhotoService } from 'src/app/core/services/photo.service';
 
 @Component({
   selector: 'app-profile',
@@ -49,9 +50,13 @@ export class ProfilePage implements OnInit {
               public listsService: ListsService,
               public router: Router,
               public loadinController: LoadingController,
-              public moviesService: MoviesService) { }
+              public moviesService: MoviesService,
+              public photoService: PhotoService) { }
 
   async ngOnInit() {
+
+    console.log(this.photoService.photos);
+    await this.photoService.loadSaved();
 
     const loading = await this.loadinController.create({
       message: 'Loading...',
@@ -78,6 +83,14 @@ export class ProfilePage implements OnInit {
     } finally {
       loading.dismiss();
     }
+  }
+
+  getProfileImage(){
+
+  }
+
+  update() {
+    this.router.navigate(['tabs/profile/update'], { state: this.user});
   }
 
   async getMovies(list) {
@@ -240,6 +253,10 @@ export class ProfilePage implements OnInit {
       // Refresco la info del usuario y las peliculas vistas, guardadas y colecciones
       this.ngOnInit();
     });
+  }
+
+  img(){
+    console.log(this.photoService.photos);
   }
 
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -8,6 +8,7 @@ import { ProfilePageRoutingModule } from './profile-routing.module';
 
 import { ProfilePage } from './profile.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { UpdateComponent } from './components/update/update.component';
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfilePage, UpdateComponent]
 })
 export class ProfilePageModule {}
