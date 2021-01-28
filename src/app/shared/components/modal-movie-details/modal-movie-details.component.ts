@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { ListsService } from 'src/app/core/services/lists.service';
@@ -5,6 +6,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-modal-movie-details',
@@ -31,7 +33,8 @@ export class ModalMovieDetailsComponent implements OnInit {
               public actionSheetController: ActionSheetController,
               public listsService: ListsService,
               public toastController: ToastController,
-              public alertController: AlertController) { }
+              public alertController: AlertController,
+              public authService: AuthService) { }
   
   ngOnInit(){
     console.log(this.isSaved, this.isSeen);
@@ -67,6 +70,7 @@ export class ModalMovieDetailsComponent implements OnInit {
       }
     } else {
       // Muestro modal para iniciar sesión
+      this.loginSignup();
     }
   }
 
@@ -75,15 +79,16 @@ export class ModalMovieDetailsComponent implements OnInit {
     if(this.isLogged) {
       if(this.isSaved) {
         const result = await this.userService.removeMovieFromSeeLater(this.user.id, this.movie.id);
-        this.toast('Movie saved');
+        this.toast('Movie removed from saved');
         this.isSaved ? this.isSaved = false : this.isSaved = true;
       } else {
         const result = await this.userService.addMovieToSeeLater(this.user.id, this.movie.id);
-        this.toast('Movie removed from saved');
+        this.toast('Movie added to saved');
         this.isSaved ? this.isSaved = false : this.isSaved = true;
       }
     } else {
       // Muestro modal para iniciar sesión
+      this.loginSignup();
     }
   }
 
@@ -124,6 +129,7 @@ export class ModalMovieDetailsComponent implements OnInit {
       actionSheet.present();
     } else {
       // Mostrar modal de login
+      this.loginSignup();
     }
   }
 
@@ -195,6 +201,33 @@ export class ModalMovieDetailsComponent implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  async loginSignup() {
+    const modal = await this.modalController.create({
+      component: LoginSignupModalComponent
+    });
+
+    await modal.present();
+
+    // const { data } = await modal.onWillDismiss();
+
+    modal.onDidDismiss().then(async data => {
+      this.isLogged = await this.authService.isLogged();
+      if(this.isLogged) {
+        const uid = await this.authService.getUserId();
+        this.user = await this.userService.getUser(uid).pipe(first()).toPromise();
+        this.isSeen = this.user.seen.some(s => s.movie == this.movie.id);
+        this.isSaved = this.user.saved.some(s => s.movie == this.movie.id);
+        this.collections = await this.listsService.getUserOwnedLists(uid).pipe(first()).toPromise();
+        
+        // Genera opciones del actionsheet
+        this.actionsSheetOptionns = this.generateActionSheetOptions(this.collections);
+      }
+    })
+      
+      
+    
   }
 
   }

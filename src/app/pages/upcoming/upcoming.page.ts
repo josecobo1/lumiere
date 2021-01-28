@@ -77,6 +77,10 @@ export class UpcomingPage implements OnInit {
         this.collections = await this.listsService.getUserOwnedLists(uid).pipe(first()).toPromise();
         console.log('collections', this.collections);
 
+         // Genera opciones del actionsheet
+        this.actionSheetOptions = this.generateActionSheetOptions(this.collections);
+        console.log(this.actionSheetOptions);
+
         // Comprueva si el usuario ha vista la película
         this.isSeen = this.user.seen.some(s => s.movie == movie.id);
 
@@ -96,9 +100,6 @@ export class UpcomingPage implements OnInit {
       // Recuper el listado dónde ver una película
       this.platforms = await this.moviesService.whereToWatch(movie.id).pipe().toPromise();
 
-      // Genera opciones del actionsheet
-      this.actionSheetOptions = this.generateActionSheetOptions(this.collections);
-      console.log(this.actionSheetOptions);
       
     } catch (error) {
       console.log('error', error);

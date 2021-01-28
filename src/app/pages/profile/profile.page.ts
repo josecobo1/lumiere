@@ -70,6 +70,8 @@ export class ProfilePage implements OnInit {
         this.seen = await this.getMovies(this.user.seen);
         this.saved = await this.getMovies(this.user.saved);
         console.log(this.saved);
+      } else {
+        this.presentModal();
       }
     } catch (error) {
       
@@ -111,7 +113,12 @@ export class ProfilePage implements OnInit {
       component: LoginSignupModalComponent
     });
 
-    return await modal.present();
+    await modal.present();
+
+    modal.onWillDismiss().then(data => {
+      // Refresco la info del usuario y las peliculas vistas, guardadas y colecciones
+      this.ngOnInit();
+    });
   }
 
   logout(){
