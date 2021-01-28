@@ -18,13 +18,28 @@
 
   <ion-grid>
     <ion-row>
+      <ion-col class="avatar" size='12'>
+        <ion-avatar>
+          <ion-img *ngIf='photoService.photos.length == 0' src='https://raw.githubusercontent.com/formacion-web/ionic-contacts/master/avatar.png'></ion-img>
+          <ion-img *ngIf='photoService.photos.length > 0' [src]='photoService.photos[0].webviewPath'></ion-img>
+        </ion-avatar>
+        <!-- <ion-button fill='outline' (click)='addPhotoToGallery()'>Update image</ion-button> -->
+        <ion-chip outline='true' (click)='addPhotoToGallery()'>
+          <ion-label>Update image</ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col>
         <form [formGroup]='formGroup'>
           <ion-item lines="full">
-            <ion-label position="floating" >Name</ion-label>
+            <ion-label position="floating">Name</ion-label>
             <ion-input type="text" required formControlName='name'></ion-input>
           </ion-item>
-          <button (click)='addPhotoToGallery()'>Photo</button>
+          <ion-item lines="full">
+            <ion-label position="floating">Slugline</ion-label>
+            <ion-input type="text" required formControlName='slugline'></ion-input>
+          </ion-item>
           <ion-button (click)='onSubmit()' expand='block'>Save</ion-button>
         </form>
       </ion-col>

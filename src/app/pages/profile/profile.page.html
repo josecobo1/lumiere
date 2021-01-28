@@ -25,10 +25,9 @@
               <img *ngIf='photoService.photos.length == 0' src="https://raw.githubusercontent.com/formacion-web/ionic-contacts/master/avatar.png" alt="">
               <ion-img *ngIf='photoService.photos.length > 0' [src]='photoService.photos[0].webviewPath'></ion-img>
             </ion-avatar>
-            <button (click)='img()'>fotos</button>
             <ion-label>
-              <h1>Jose Cobo</h1>
-              <p>Film aficionado</p>
+              <h1>{{ userObservable?.name }}</h1>
+              <p>{{ userObservable?.slugline }}</p>
             </ion-label>
 
             <ion-button fill='clear' (click)='update()'>

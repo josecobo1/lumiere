@@ -75,7 +75,11 @@ export class LoginSignupModalComponent implements OnInit {
 
     if(!data.dismiss) {
       console.log('nuevo user', data.user);
-      this.saveUser(data.user);
+      const user = {
+        ...data.user,
+        slugline: 'A roaring rampage of revenge'
+      }
+      this.saveUser(user);
     }
     
   }

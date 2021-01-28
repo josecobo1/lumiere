@@ -3,15 +3,49 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/search"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ cast.name }}</ion-title>
+    <ion-title>{{ castDetails?.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size='6' *ngFor='let movie of cast.known_for'>
-        <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster>
+      <ion-col size='4'>
+        <ion-img [src]='castDetails?.profile_path | posterImg'></ion-img>
+      </ion-col>
+      <ion-col>
+        <h4>
+          Name: {{ castDetails?.name }}
+        </h4>
+        <h4>
+          Known for {{ castDetails?.known_for_department }}
+        </h4>
+        <h4>
+          Born: {{ castDetails?.place_of_birth }}
+        </h4>
+        <h4>
+          Popularity: {{ castDetails?.popularity }}
+        </h4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size='12'>
+        <ion-card>
+          <ion-card-content>
+            {{ castDetails?.biography }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size='12'>
+        <h4>Known for:</h4>
+        <ion-slides [options]='slideOpts'>
+          <ion-slide *ngFor='let movie of cast.known_for'>
+            <app-movie-poster (movieDetail)='presentModal(movie)' [movie]='movie'></app-movie-poster>
+          </ion-slide>
+        </ion-slides>
+        <!-- <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster> -->
         <!-- <app-movie-poster [movie]='movie' (movieDetail)='presentModal(movie)'></app-movie-poster> -->
       </ion-col>
     </ion-row>

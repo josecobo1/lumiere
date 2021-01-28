@@ -22,6 +22,11 @@ export class UserService {
     return this.afs.collection('Users').doc(uid).valueChanges();
   }
 
+  // Actualiza información de un usuario
+  updateUser(user: any): Promise<any> {
+    return this.afs.collection('Users').doc(user.id).set(user);
+  }
+
   // Comprueba si una película està marcada como vista por un usuario
   async isSeen(userUid, movieId) {
 

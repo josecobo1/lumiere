@@ -38,6 +38,7 @@ export class ProfilePage implements OnInit {
   // user;
   lists;
   subscribe: Subscription;
+  userObservable;
 
   selector: string = 'seen';
   // collections;
@@ -74,7 +75,8 @@ export class ProfilePage implements OnInit {
         await this.getUserData(); // Recupero toda a información del usuario
         this.seen = await this.getMovies(this.user.seen);
         this.saved = await this.getMovies(this.user.saved);
-        console.log(this.saved);
+        await this.usrObservable(uid);
+        console.log(this.userObservable);
       } else {
         this.presentModal();
       }
@@ -83,10 +85,6 @@ export class ProfilePage implements OnInit {
     } finally {
       loading.dismiss();
     }
-  }
-
-  getProfileImage(){
-
   }
 
   update() {
@@ -147,15 +145,6 @@ export class ProfilePage implements OnInit {
     toast.present();
   }
 
-  // async isLogged() {
-  //   console.log('boton clickado');
-  //   const state = await this.authService.isLogged();
-  //   if(state){
-  //     this.presentToast('User logged');
-  //   } else {
-  //     this.presentToast('User not logged in the app');
-  //   }
-  // }
 
   async segmentChanged(event) {
     if(event.detail.value === 'collections') {
@@ -166,10 +155,6 @@ export class ProfilePage implements OnInit {
     }
     
   }
-
-  // getDetails(list) {
-  //   this.router.navigate(['tabs/profile/lists/details'], {state: list})
-  // }
 
   async getDetails(movie) {
 
@@ -257,6 +242,12 @@ export class ProfilePage implements OnInit {
 
   img(){
     console.log(this.photoService.photos);
+  }
+  sub: Subscription;
+  async usrObservable(uid){
+    console.log('usrObservable');
+    this.sub = this.userService.getUser(uid).subscribe(data => {this.userObservable = data; console.log(this.userObservable);});
+    console.log(this.userObservable);
   }
 
 }

@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { ListsService } from 'src/app/core/services/lists.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { LoginSignupModalComponent } from '../login-signup-modal/login-signup-modal.component';
@@ -25,6 +26,7 @@ export class ModalMovieDetailsComponent implements OnInit {
   @Input() isSaved: boolean;
   @Input() isSeen: boolean;
   @Input() actionsSheetOptionns: any;
+  region = 'ES';
 
   @Output() seen = new EventEmitter();
 
@@ -34,10 +36,13 @@ export class ModalMovieDetailsComponent implements OnInit {
               public listsService: ListsService,
               public toastController: ToastController,
               public alertController: AlertController,
-              public authService: AuthService) { }
+              public authService: AuthService,
+              public router: Router,
+              private navCtrl: NavController) { }
   
   ngOnInit(){
     console.log(this.isSaved, this.isSeen);
+    console.log('Platforms', this.platforms.results[this.region]);
   }
 
   // Opciones para el slider de imagenes de la película
@@ -224,10 +229,13 @@ export class ModalMovieDetailsComponent implements OnInit {
         // Genera opciones del actionsheet
         this.actionsSheetOptionns = this.generateActionSheetOptions(this.collections);
       }
-    })
-      
-      
+    })     
     
+  }
+
+  getCast(c){
+    console.log(c);
+    // this.navCtrl.navigateForward(['tabs/search/cast', c]);
   }
 
   }

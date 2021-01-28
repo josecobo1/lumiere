@@ -62,6 +62,7 @@ export class MoviesService {
   // Devuelve plataformas donde ver una película
   // https://api.themoviedb.org/3/movie/464052/watch/providers?api_key=5d8c3de3e2543b591b9b443d64c7b56f
   whereToWatch(id): Observable<any> {
+    console.log(`${this.api_url}/movie/${id}/watch/providers?${this.api_key}`);
     return this.http.get<any>(`${this.api_url}/movie/${id}/watch/providers?${this.api_key}`);
   }
 

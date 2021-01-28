@@ -1,5 +1,6 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { ToastController } from '@ionic/angular';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { PhotoService } from 'src/app/core/services/photo.service';
 
@@ -10,7 +11,10 @@ import { PhotoService } from 'src/app/core/services/photo.service';
 })
 export class UpdateComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, public toastController: ToastController, public photoService: PhotoService) { }
+  constructor(private fb: FormBuilder, 
+              public toastController: ToastController, 
+              public photoService: PhotoService,
+              public userService: UserService) { }
 
   formGroup: FormGroup;
 
@@ -21,14 +25,15 @@ export class UpdateComponent implements OnInit {
 
   generateForm(): FormGroup {
     return this.fb.group({
-      name: [history.state.name],
-      img: ['']
+      name: [history.state.name, [Validators.required]],
+      slugline: [history.state.slugline, [Validators.required]]
     });
   }
 
-  onSubmit(){
+  async onSubmit(){
     console.log(this.formGroup.value);
-    this.toast('Profile updated');
+    await this.userService.updateUser({ ...history.state, ...this.formGroup.value});
+    await this.toast('Profile updated');
   }
 
   async toast(message) {
@@ -39,7 +44,8 @@ export class UpdateComponent implements OnInit {
     toast.present();
   }
 
-  addPhotoToGallery() {
-    this.photoService.addNewToGallery();
+  async addPhotoToGallery() {
+    await this.photoService.addNewToGallery();
+    this.toast('Profile image updated!');
   }
 }
