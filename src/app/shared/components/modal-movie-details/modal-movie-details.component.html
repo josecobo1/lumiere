@@ -22,7 +22,7 @@
 
     <ion-row>
       <ion-col size='12'>
-        <ion-button expand='full' *ngFor='let platform of platforms.results[region]?.flatrate'>
+        <ion-button class='platform' expand='full' *ngFor='let platform of platforms.results[region]?.flatrate'>
           {{ platform.provider_name }}
         </ion-button>
       </ion-col>

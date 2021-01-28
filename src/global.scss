@@ -25,16 +25,49 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-// Cosas personalizadas
-// ion-card{
-//     --ion-background-color: variable del color;
-// }
+@import "./theme/variables.scss";
 
-// ion-header{
-//     --ion-background-color: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
-//     --padding: 20px 0px 20px 0px;
-// }
+ion-header{
+    --ion-background-color: transparent;
+}
 
-// ion-content{
-//     --ion-toolbar-background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
-// }
+ion-content{
+    --ion-background-color: #030313;
+    --ion-text-color: #ebebed;
+}
+
+app-movie-poster{
+    border-radius: 5px;
+}
+
+ion-card{
+    --ion-background-color: #252531;
+    --ion-text-color: #fcfdfd;
+}
+
+ion-chip{
+    --background: #5e606b;
+    --color: #fcfdfd;
+}
+
+ion-label{
+    --ion-background-color: #5e606b;
+}
+
+ion-icon{
+    color: #13ea9f;
+    font-size: 45px;
+}
+
+ion-tabs {
+    --ion-background-color: #252531;
+}
+
+ion-badge{
+    --background: #13ea9f;
+    font-size: 32px;
+}
+
+.platform{
+    --background: #13ea9f;
+}
