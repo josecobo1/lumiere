@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -27,47 +27,126 @@
 
 @import "./theme/variables.scss";
 
-ion-header{
-    --ion-background-color: transparent;
-}
-
-ion-content{
-    --ion-background-color: #030313;
-    --ion-text-color: #ebebed;
-}
-
-app-movie-poster{
-    border-radius: 5px;
-}
-
-ion-card{
-    --ion-background-color: #252531;
-    --ion-text-color: #fcfdfd;
-}
-
-ion-chip{
+ion-searchbar {
     --background: #5e606b;
     --color: #fcfdfd;
+    --clear-button-color: #13ea9f;
+    --cancel-button-color: #13ea9f;
+    --placeholder-color: #fcfdfd;
 }
 
-ion-label{
-    --ion-background-color: #5e606b;
+// :root {
+//   --ion-background-color: var(--ion-color-dark);
+//   --ion-text-color: #fff;
+//   //   --ion-tab-bar-background: var(--ion-color-primary);
+
+//   ion-tab-button {
+//     --color-selected: var(--ion-color-primary);
+//   }
+//   --ion-text-color-rgb: 255, 255, 255;
+
+//   ion-card {
+//     --color: #fff;
+//   }
+
+//   ion-item {
+//     --border-color: var(--ion-color-light);
+//     --detail-push-color: var(--ion-color-light);
+//   }
+
+//   --ion-background-color: var(--ion-color-dark);
+//   --ion-text-color: #fff;
+//   //   --ion-tab-bar-background: var(--ion-color-primary);
+
+//   ion-tab-button {
+//     --color-selected: var(--ion-color-primary);
+//   }
+//     --ion-text-color-rgb: 255, 255, 255;
+
+//   ion-card {
+//     --color: #fff;
+//   }
+
+//   ion-item {
+//     --border-color: var(--ion-color-light);
+//     --detail-push-color: var(--ion-color-light);
+//   }
+
+//     // ion-action-sheet{
+//     //     --button-background: #252531;
+//     //     --color: #13ea9f;
+//     // }
+// }
+
+ion-tab-button {
+    --color-selected: #13ea9f;
 }
 
-ion-icon{
-    color: #13ea9f;
-    font-size: 45px;
+// ion-action-sheet{
+//     --button-background: #252531;
+//     --color: #13ea9f;
+// }
+
+ion-header {
+  --ion-background-color: transparent;
 }
 
-ion-tabs {
-    --ion-background-color: #252531;
+ion-content {
+  --ion-background-color: #030313;
+  --ion-text-color: #ebebed;
 }
 
-ion-badge{
-    --background: #13ea9f;
-    font-size: 32px;
+app-movie-poster {
+  border-radius: 10px;
 }
 
-.platform{
-    --background: #13ea9f;
+ion-card {
+  --ion-background-color: #252531;
+  --ion-text-color: #fcfdfd;
+}
+
+ion-chip {
+  --background: #5e606b;
+  --color: #fcfdfd;
+}
+
+ion-label {
+  --ion-background-color: #5e606b;
+}
+
+ion-icon {
+  // color: #13ea9f;
+  font-size: 45px;
+}
+
+ion-tab-bar {
+  --ion-background-color: #252531;
+//   --background: #252531;
+//   --color: #fcfdfd;
+}
+
+ion-badge {
+  --background: #13ea9f;
+//   font-size: 32px;
+}
+
+.platform {
+  --background: #13ea9f;
+//   font-size: 40px;
+}
+
+.small{
+    font-size: 24px;
+}
+
+ion-segment{
+    --background: #5e606b;
+}
+
+ion-searchbar {
+    --background: #5e606b;
+    --color: #fcfdfd;
+    --clear-button-color: #13ea9f;
+    --cancel-button-color: #13ea9f;
+    --placeholder-color: #fcfdfd;
 }

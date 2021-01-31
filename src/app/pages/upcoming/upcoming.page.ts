@@ -8,6 +8,7 @@ import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ModalMovieDetailsComponent } from 'src/app/shared/components/modal-movie-details/modal-movie-details.component';
 import { ListsService } from 'src/app/core/services/lists.service';
+import * as ungap from '@ungap/global-this';
 
 @Component({
   selector: 'app-upcoming',
