@@ -15,6 +15,7 @@ import { WhereWatchCountryPipe } from './pipes/where-watch-country.pipe';
 import { ListStoredMoviesComponent } from './components/list-stored-movies/list-stored-movies.component';
 import { GenrePipe } from './pipes/genre.pipe';
 import { CollectionComponent } from './components/collection/collection.component';
+import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
 
 
 
@@ -31,7 +32,8 @@ import { CollectionComponent } from './components/collection/collection.componen
                  WhereWatchCountryPipe,
                  ListStoredMoviesComponent,
                  GenrePipe,
-                 CollectionComponent ],
+                 CollectionComponent,
+                MovieDetailsComponent ],
   imports: [
     CommonModule,
     IonicModule.forRoot(),
@@ -42,6 +44,9 @@ import { CollectionComponent } from './components/collection/collection.componen
             CastImageComponent, 
             ListElementComponent, 
             ListStoredMoviesComponent, 
-            CollectionComponent]
+            CollectionComponent,
+            GenrePipe,
+            PosterImgPipe,
+            MovieDetailsComponent]
 })
 export class SharedModule { }

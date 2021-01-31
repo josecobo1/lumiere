@@ -5,6 +5,7 @@ import { ListStoredMoviesComponent } from 'src/app/shared/components/list-stored
 import { MoviesByCastComponent } from 'src/app/shared/components/movies-by-cast/movies-by-cast.component';
 
 import { TabsPage } from './tabs.page';
+import { MovieDetailsComponent } from 'src/app/shared/components/movie-details/movie-details.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
             component: ListStoredMoviesComponent
           }
         ]
+      },
+      {
+        path: 'movie-details',
+        component: MovieDetailsComponent
       }
     ]
   },

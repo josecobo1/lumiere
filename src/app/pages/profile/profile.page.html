@@ -30,9 +30,15 @@
               <p>{{ userObservable?.slugline }}</p>
             </ion-label>
 
-            <ion-button fill='clear' (click)='update()'>
-              <ion-icon name="settings-outline"></ion-icon>
+            <ion-button fill='clear' (click)='update()' *ngIf='isLogged'>
+              <ion-icon class='btn-small' name="settings-outline"></ion-icon>
+              <ion-icon class='btn-small'name="log-in-outline"></ion-icon>
             </ion-button>
+
+            <ion-button fill='clear' (click)='update()' *ngIf='!isLogged'>
+              <ion-icon class='btn-small'name="log-in-outline"></ion-icon>
+            </ion-button>
+
 
           </ion-item>
 

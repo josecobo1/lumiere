@@ -17,6 +17,9 @@ import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MovieDetailsComponent } from './shared/components/movie-details/movie-details.component';
+import { GenrePipe } from './shared/pipes/genre.pipe';
+import { PosterImgPipe } from './shared/pipes/poster-img.pipe';
 
 
 @NgModule({

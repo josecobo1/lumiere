@@ -1,3 +1,4 @@
+import { NavigationExtras, Router } from '@angular/router';
 import { MoviesService } from './../../core/services/movies.service';
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
@@ -23,7 +24,8 @@ export class UpcomingPage implements OnInit {
               public loadingController: LoadingController,
               public authService: AuthService,
               public userService: UserService,
-              public listsService: ListsService) { }
+              public listsService: ListsService,
+              private router: Router) { }
 
   upcomingMovies: UpcomingMovies;
   
@@ -40,6 +42,27 @@ export class UpcomingPage implements OnInit {
   isSeen: boolean; // El usuario ha marcado la película como vista
   isSaved: boolean; // El usuario ha marcado la película como ver depués
   actionSheetOptions: any; // Acciones del actionsheet
+
+  async getMovieDetails(movie){
+    await this.getDetails(movie);
+
+    const s = {
+        isLogged: this.isLogged,
+        user: this.user,
+        movie: this.movie,
+        images: this.images,
+        collections: this.collections,
+        region: this.region,
+        platforms: this.platforms,
+        isSeen: this.isSeen,
+        isSaved: this.isSaved,
+        actionSheetOptions: this.actionSheetOptions
+    }
+
+    console.log(s);
+
+    this.router.navigate(['tabs/movie-details'], {state: s});
+  }
 
   // Genera opciones para el action sheet del modal
   generateActionSheetOptions(collections: any) {
@@ -109,7 +132,7 @@ export class UpcomingPage implements OnInit {
     }
 
     // Muestra el modal con los detalles
-    this.presentDetails();
+    // this.presentDetails();
   }
 
   // Modal con los detalles de la película
