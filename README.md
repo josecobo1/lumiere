@@ -13,6 +13,9 @@ Funciones generales:
   - Genero 
 - Los usuarios pueden compartir sus listas con otros usuarios. 
 
+Demo:
+![demo](https://imgur.com/cOx9LVn)
+
 Wireframe:
 
 ![alt text](https://i.imgur.com/x8gEvrl.png)
