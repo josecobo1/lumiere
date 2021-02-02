@@ -14,7 +14,7 @@ Funciones generales:
 - Los usuarios pueden compartir sus listas con otros usuarios. 
 
 Demo:
-![demo](https://imgur.com/cOx9LVn)
+![demo](https://i.imgur.com/cOx9LVn.mp4)
 
 Wireframe:
 
